@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -49,39 +50,45 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
         myRecyclerView.setLayoutManager(linearLayoutManager);
         myRecyclerView.setAdapter(adapter);*/
 
-        service.getRecipes().enqueue(new Callback<Recipe>() {
+        service.getRecipes().enqueue(new Callback<List<Recipe>>() {
+
+
             @Override
-            public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+            public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 settingUpView(response);
             }
 
             @Override
-            public void onFailure(Call<Recipe> call, Throwable t) {
+            public void onFailure(Call<List<Recipe>> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT)
                         .show();
+                Log.d(getLocalClassName(), t.getMessage());
             }
         });
     }
-        private void settingUpView (Response <Recipe> response){
-            if (response.isSuccessful()) {
-                recipe = response.body();
-                adapter = new RecipeAdapter(recipe, MainActivity.this::onClick);
-                myRecyclerView.setHasFixedSize(true);
-                myRecyclerView.setLayoutManager(linearLayoutManager);
-                myRecyclerView.setAdapter(adapter);
-            } else {
-                try {
-                    Toast.makeText(MainActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT)
-                            .show();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+    private void settingUpView(Response<List<Recipe>> response) {
+        if (response.isSuccessful()) {
+            recipe = response.body().get(0);
+            adapter = new RecipeAdapter(recipe, MainActivity.this::onClick);
+            myRecyclerView.setHasFixedSize(true);
+            myRecyclerView.setLayoutManager(linearLayoutManager);
+            myRecyclerView.setAdapter(adapter);
+        } else {
+            try {
+                Toast.makeText(MainActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT)
+                        .show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        };
-
-        @Override
-        public void onClick ( int clickedItemIndex){
-
         }
     }
+
+    ;
+
+    @Override
+    public void onClick(int clickedItemIndex) {
+
+    }
+}
 
