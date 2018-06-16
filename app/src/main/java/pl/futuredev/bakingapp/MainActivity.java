@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     private APIService service;
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView.Adapter adapter;
-    private Recipe recipe;
     private Step step;
+    private List<Recipe> recipes;
     private List<Ingredient> ingredient;
 
     @Override
@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
 
         service.getRecipes().enqueue(new Callback<List<Recipe>>() {
 
-
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 settingUpView(response);
@@ -69,9 +68,8 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
 
     private void settingUpView(Response<List<Recipe>> response) {
         if (response.isSuccessful()) {
-            recipe = response.body().get(0);
-            adapter = new RecipeAdapter(recipe, MainActivity.this::onClick);
-            myRecyclerView.setHasFixedSize(true);
+            recipes = response.body();
+            adapter = new RecipeAdapter(recipes,getApplicationContext(), MainActivity.this::onClick);
             myRecyclerView.setLayoutManager(linearLayoutManager);
             myRecyclerView.setAdapter(adapter);
         } else {
@@ -88,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
 
     @Override
     public void onClick(int clickedItemIndex) {
-
+        Toast.makeText(this, "Dziala czy nie dziala"+ clickedItemIndex, Toast.LENGTH_SHORT).show();
     }
 }
 

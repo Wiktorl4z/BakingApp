@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 
 public interface APIService {
 
-//    @GET("raw/WjKgw7Dv/")
-    @GET("topher/2017/May/59121517_baking/baking.json/")
-    Call <List<Recipe>> getRecipes();
+    @GET("raw/WjKgw7Dv/")
+//    @GET("topher/2017/May/59121517_baking/baking.json/")
+    Call<List<Recipe>> getRecipes();
 }
