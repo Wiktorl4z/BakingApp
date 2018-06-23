@@ -1,7 +1,8 @@
 package pl.futuredev.bakingapp;
 
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +10,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import pl.futuredev.bakingapp.adapter.RecipeAdapter;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Recipe;
 import pl.futuredev.bakingapp.models.Step;
@@ -25,6 +28,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements IOnClickHandler {
 
+    private static final String TAG = "MyActivity";
     @BindView(R.id.my_recycler_view)
     RecyclerView myRecyclerView;
     private InternetReceiver internetReceiver;
@@ -34,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     private Step step;
     private List<Recipe> recipes;
     private List<Ingredient> ingredient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,8 +90,12 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     ;
 
     @Override
-    public void onClick(int clickedItemIndex) {
-        Toast.makeText(this, "Dziala czy nie dziala"+ clickedItemIndex, Toast.LENGTH_SHORT).show();
+    public void onClick(Recipe recipe, int clickedItemIndex) {
+        Intent intent = new Intent(this, SecondActivity.class);
+        intent.putExtra("recipe", (Parcelable) recipe);
+        intent.putExtra("id", clickedItemIndex);
+        startActivity(intent);
+
     }
 }
 

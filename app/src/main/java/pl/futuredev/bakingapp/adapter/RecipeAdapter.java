@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp;
+package pl.futuredev.bakingapp.adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -15,6 +15,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.blurry.Blurry;
+import pl.futuredev.bakingapp.IOnClickHandler;
+import pl.futuredev.bakingapp.R;
+import pl.futuredev.bakingapp.SecondActivity;
 import pl.futuredev.bakingapp.models.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
@@ -22,6 +25,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     private final IOnClickHandler onClickHandler;
     private List<Recipe> recipe;
     Context context;
+    Recipe recipee;
+
 
     public RecipeAdapter(List<Recipe> recipe, Context context, IOnClickHandler onClickHandler) {
         this.onClickHandler = onClickHandler;
@@ -43,12 +48,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            view.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             int clickPosition = getAdapterPosition();
-            onClickHandler.onClick(clickPosition);
+            onClickHandler.onClick(recipee, clickPosition);
         }
     }
 
@@ -67,8 +73,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         TextView tvRecipeName = holder.tvRecipeName;
         RelativeLayout relativeLayout = holder.rlSingleRecipe;
 
-        String cake = recipe.get(position).getName();
-
+        recipee = recipe.get(position);
+        String cake = recipee.getName();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
