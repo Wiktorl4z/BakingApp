@@ -24,7 +24,6 @@ public class SecondActivity extends AppCompatActivity {
 
         Recipe recipe = getIntent().getParcelableExtra("recipe");
         int position = getIntent().getIntExtra("id", 0);
-
         replaceFragment(recipe, position);
     }
 

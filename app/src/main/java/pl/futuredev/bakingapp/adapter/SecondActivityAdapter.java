@@ -2,6 +2,7 @@ package pl.futuredev.bakingapp.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -23,6 +24,8 @@ import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.SecondActivity;
+import pl.futuredev.bakingapp.ThirdActivity;
+import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Recipe;
 import pl.futuredev.bakingapp.models.Step;
 
@@ -30,9 +33,12 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
 
     private VerticalStepperView mVerticalStepperView;
     private List<Step> steps;
+    private Context context;
     private SecondActivity secondActivity;
     private String recipeName;
-
+    private List<Ingredient> ingredients;
+    private Step step;
+    private Ingredient ingredient;
     int mPosition;
 
     public void setSecondActivity(SecondActivity secondActivity) {
@@ -45,6 +51,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
         args.putInt("id", itemId);
         args.putString("recipeName", recipe.getName());
+        args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipe.getIngredients());
         fragment.setArguments(args);
         return fragment;
     }
@@ -60,6 +67,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         if (getArguments() != null) {
             steps = getArguments().getParcelableArrayList("steps");
             recipeName = getArguments().getString("recipeName");
+            ingredients = getArguments().getParcelableArrayList("ingredients");
         }
 
         mPosition = Objects.requireNonNull(getArguments()).getInt("id");
@@ -75,6 +83,8 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         Button nextButton = inflateView.findViewById(R.id.button_next);
         Button prevButton = inflateView.findViewById(R.id.button_prev);
 
+        step = steps.get(index);
+        ingredient = ingredients.get(index);
 
         nextButton.setText(index == size() - 1 ? getString(R.string.complete) : getString(android.R.string.ok));
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -86,13 +96,14 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
                     alertbox.setTitle(R.string.well_done);
                     alertbox.setNeutralButton("OK",
                             new DialogInterface.OnClickListener() {
-
-                                public void onClick(DialogInterface arg0,
-                                                    int arg1) {
-
-                                }
+                                public void onClick(DialogInterface arg0,int arg1) {}
                             });
                     alertbox.show();
+                } else {
+                    Intent intent = new Intent(context, ThirdActivity.class);
+                    intent.putExtra("step", step);
+                    intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
+                    startActivity(intent);
                 }
             }
         });

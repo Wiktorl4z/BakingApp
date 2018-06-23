@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     private void settingUpView(Response<List<Recipe>> response) {
         if (response.isSuccessful()) {
             recipes = response.body();
-            adapter = new RecipeAdapter(recipes,getApplicationContext(), MainActivity.this::onClick);
+            adapter = new RecipeAdapter(recipes, getApplicationContext(), MainActivity.this::onClick);
             myRecyclerView.setLayoutManager(linearLayoutManager);
             myRecyclerView.setAdapter(adapter);
         } else {

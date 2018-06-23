@@ -17,20 +17,19 @@ import butterknife.ButterKnife;
 import jp.wasabeef.blurry.Blurry;
 import pl.futuredev.bakingapp.IOnClickHandler;
 import pl.futuredev.bakingapp.R;
-import pl.futuredev.bakingapp.SecondActivity;
 import pl.futuredev.bakingapp.models.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
     private final IOnClickHandler onClickHandler;
-    private List<Recipe> recipe;
+    private List<Recipe> recipes;
     Context context;
-    Recipe recipee;
+    Recipe recipe;
 
 
     public RecipeAdapter(List<Recipe> recipe, Context context, IOnClickHandler onClickHandler) {
         this.onClickHandler = onClickHandler;
-        this.recipe = recipe;
+        this.recipes = recipe;
         this.context = context;
     }
 
@@ -54,7 +53,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             int clickPosition = getAdapterPosition();
-            onClickHandler.onClick(recipee, clickPosition);
+            onClickHandler.onClick(recipe, clickPosition);
         }
     }
 
@@ -73,8 +72,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         TextView tvRecipeName = holder.tvRecipeName;
         RelativeLayout relativeLayout = holder.rlSingleRecipe;
 
-        recipee = recipe.get(position);
-        String cake = recipee.getName();
+        recipe = recipes.get(position);
+        String cake = recipe.getName();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -98,14 +97,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             ivRecipe.setImageResource(R.drawable.cheesecake);
         }
 
-        //   Picasso.get().load(R.drawable.nutellapie).into(ivRecipe);
-        tvServings.setText(context.getString(R.string.servings) +recipe.get(position).getServings());
-        tvRecipeName.setText(recipe.get(position).getName());
+        tvServings.setText(context.getString(R.string.servings) + recipes.get(position).getServings());
+        tvRecipeName.setText(recipes.get(position).getName());
 
     }
 
     @Override
     public int getItemCount() {
-        return recipe.size();
+        return recipes.size();
     }
 }
