@@ -15,7 +15,6 @@ import pl.futuredev.bakingapp.models.Ingredient;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.ViewHolder> {
 
-
     private List<Ingredient> ingredient;
 
     public IngredientsAdapter(List<Ingredient> ingredient) {

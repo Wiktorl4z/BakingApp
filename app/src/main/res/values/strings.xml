@@ -19,4 +19,7 @@
     <string name="you_have_completed">You have completed all steps for </string>
     <string name="toggle_animation_button">Toggle Animation</string>
     <string name="ingredients">ingredients</string>
+    <string name="quantity">Quantity:</string>
+    <string name="ingredient">Ingredient:</string>
+    <string name="measure">Measure:</string>
 </resources>
