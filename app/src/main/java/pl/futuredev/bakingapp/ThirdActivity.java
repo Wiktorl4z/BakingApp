@@ -58,7 +58,7 @@ public class ThirdActivity extends AppCompatActivity {
         tvTitleDescription.setText(step.getShortDescription());
         tvStepDescription.setText(step.getDescription());
 
-        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         ingredientsRecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new IngredientsAdapter(ingredients);
         ingredientsRecyclerView.setAdapter(adapter);
