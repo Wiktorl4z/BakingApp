@@ -3,6 +3,7 @@ package pl.futuredev.bakingapp;
 import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -149,18 +150,21 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     private void initializePlayer(Step step) {
-        player = ExoPlayerFactory.newSimpleInstance(
-                new DefaultRenderersFactory(this),
-                new DefaultTrackSelector(), new DefaultLoadControl());
-
-        videoView.setPlayer(player);
-
-        player.setPlayWhenReady(true);
-        player.seekTo(0, 0);
-
         Uri uri = Uri.parse(step.getVideoURL());
-        MediaSource mediaSource = buildMediaSource(uri);
-        player.prepare(mediaSource, true, false);
+        if (uri == null || uri.equals(Uri.EMPTY)) {
+            videoView.setDefaultArtwork(BitmapFactory.decodeResource
+                    (getResources(), R.drawable.brownies));
+        } else {
+            player = ExoPlayerFactory.newSimpleInstance(
+                    new DefaultRenderersFactory(this),
+                    new DefaultTrackSelector(), new DefaultLoadControl());
+            player.setPlayWhenReady(true);
+            player.seekTo(0, 0);
+            videoView.setPlayer(player);
+            MediaSource mediaSource = buildMediaSource(uri);
+            player.prepare(mediaSource, true, false);
+        }
+
     }
 
     private MediaSource buildMediaSource(Uri uri) {
