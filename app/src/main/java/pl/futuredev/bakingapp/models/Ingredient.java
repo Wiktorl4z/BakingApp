@@ -1,11 +1,13 @@
 package pl.futuredev.bakingapp.models;
 
+import android.arch.persistence.room.Entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "ingredients")
 public class Ingredient implements Parcelable {
 
     @SerializedName("quantity")

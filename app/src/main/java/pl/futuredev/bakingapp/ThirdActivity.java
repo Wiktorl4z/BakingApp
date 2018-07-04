@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -27,6 +30,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.adapter.IngredientsAdapter;
+import pl.futuredev.bakingapp.database.RecipeDataBase;
+import pl.futuredev.bakingapp.database.RecipePOJO;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
@@ -42,11 +47,17 @@ public class ThirdActivity extends AppCompatActivity {
     TextView tvIngredientsLeft;
     @BindView(R.id.ingredients_recycler_view)
     RecyclerView ingredientsRecyclerView;
+    @BindView(R.id.toolbarThird)
+    Toolbar toolbarThird;
     private ExoPlayer player;
     private LinearLayoutManager linearLayoutManager;
     private Step step;
     private List<Ingredient> ingredients;
     private RecyclerView.Adapter adapter;
+    private RecipePOJO recipePOJO;
+    private String recipeName;
+    boolean widgetChecked;
+    private RecipeDataBase recipeDataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +65,12 @@ public class ThirdActivity extends AppCompatActivity {
         setContentView(R.layout.details_activity);
         ButterKnife.bind(this);
 
+        setSupportActionBar(toolbarThird);
+
+        recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
+
         step = getIntent().getParcelableExtra("step");
+        recipeName = getIntent().getParcelableExtra("recipeName");
         ingredients = getIntent().getParcelableArrayListExtra("ingredients");
 
         tvTitleDescription.setText(step.getShortDescription());
@@ -74,13 +90,30 @@ public class ThirdActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()) {
             case R.id.action_settings:
+                if (!widgetChecked) {
+                    addToDatabase();
+                    Toast.makeText(this, "Add to Widget", Toast.LENGTH_SHORT).show();
+                    widgetChecked = true;
+                } else {
+                    removeFromDatabase();
+                    Toast.makeText(this, "Widget Removed", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void addToDatabase() {
+        recipePOJO = new RecipePOJO(recipeName, ingredients);
+        recipeDataBase.recipeDao().insertRecipeWidget(recipePOJO);
+    }
+
+    public void removeFromDatabase() {
+        recipePOJO = new RecipePOJO(recipeName, ingredients);
+        recipeDataBase.recipeDao().deleteRecipeWidget(recipePOJO);
     }
 
     private void initializePlayer(Step step) {

@@ -6,14 +6,16 @@ import android.arch.persistence.room.DatabaseConfiguration;
 import android.arch.persistence.room.InvalidationTracker;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import pl.futuredev.bakingapp.R;
 
-@Database(entities = {RecipePOJO.class}, version = 1, exportSchema = false)
-public class RecipeDataBase extends RoomDatabase {
+@Database(entities = {RecipePOJO.class}, version = 2, exportSchema = false)
+@TypeConverters({IngredientConverter.class})
+public abstract class RecipeDataBase extends RoomDatabase {
 
 
     private static final String LOG_TAG = RecipeDataBase.class.getSimpleName();
@@ -33,6 +35,8 @@ public class RecipeDataBase extends RoomDatabase {
         Log.d(LOG_TAG, context.getString(R.string.getting_database_instance));
         return recipeDataBaseInstance;
     }
+
+    public abstract RecipeDao recipeDao();
 
 
     @NonNull

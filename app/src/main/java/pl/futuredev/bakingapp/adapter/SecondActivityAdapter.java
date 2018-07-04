@@ -101,6 +101,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
                     alertbox.show();
                 } else {
                     Intent intent = new Intent(context, ThirdActivity.class);
+                    intent.putExtra("recipeName",recipeName);
                     intent.putExtra("step", step);
                     intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
                     startActivity(intent);

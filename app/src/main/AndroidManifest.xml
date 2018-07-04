@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SecondActivity" />
-        <activity android:name=".ThirdActivity" />
+        <activity
+            android:name=".ThirdActivity" />
 
         <receiver android:name=".service.InternetReceiver">
             <intent-filter>

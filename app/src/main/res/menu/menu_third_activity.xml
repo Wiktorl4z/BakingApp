@@ -6,9 +6,9 @@
 
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:icon="@drawable/nutellapie"
+        android:orderInCategory="1"
         android:title="@string/add_to_widget"
-        app:showAsAction="ifRoom" />
+        android:icon="@drawable/ic_baseline_widgets_24px"
+        app:showAsAction="always" />
 
 </menu>
