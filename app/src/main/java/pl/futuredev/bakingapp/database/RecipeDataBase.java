@@ -13,7 +13,7 @@ import android.util.Log;
 
 import pl.futuredev.bakingapp.R;
 
-@Database(entities = {RecipePOJO.class}, version = 2, exportSchema = false)
+@Database(entities = {RecipePOJO.class}, version = 3, exportSchema = false)
 @TypeConverters({IngredientConverter.class})
 public abstract class RecipeDataBase extends RoomDatabase {
 

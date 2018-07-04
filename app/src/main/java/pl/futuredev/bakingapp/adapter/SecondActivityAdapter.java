@@ -39,7 +39,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
     private List<Ingredient> ingredients;
     private Step step;
     private Ingredient ingredient;
-    int mPosition;
+    private int recipeID;
 
     public void setSecondActivity(SecondActivity secondActivity) {
         this.secondActivity = secondActivity;
@@ -49,7 +49,8 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         SecondActivityAdapter fragment = new SecondActivityAdapter();
         Bundle args = new Bundle();
         args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
-        args.putInt("id", itemId);
+        args.putInt("clickedItemIndex", itemId);
+        args.putInt("id", recipe.getId());
         args.putString("recipeName", recipe.getName());
         args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipe.getIngredients());
         fragment.setArguments(args);
@@ -68,9 +69,8 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
             steps = getArguments().getParcelableArrayList("steps");
             recipeName = getArguments().getString("recipeName");
             ingredients = getArguments().getParcelableArrayList("ingredients");
+            recipeID = getArguments().getInt("id");
         }
-
-        mPosition = Objects.requireNonNull(getArguments()).getInt("id");
 
         mVerticalStepperView = view.findViewById(R.id.vertical_stepper_view);
         mVerticalStepperView.setStepperAdapter(this);
@@ -96,13 +96,15 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
                     alertbox.setTitle(R.string.well_done);
                     alertbox.setNeutralButton("OK",
                             new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface arg0,int arg1) {}
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                }
                             });
                     alertbox.show();
                 } else {
                     Intent intent = new Intent(context, ThirdActivity.class);
-                    intent.putExtra("recipeName",recipeName);
+                    intent.putExtra("recipeName", recipeName);
                     intent.putExtra("step", step);
+                    intent.putExtra("id", recipeID);
                     intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
                     startActivity(intent);
                 }

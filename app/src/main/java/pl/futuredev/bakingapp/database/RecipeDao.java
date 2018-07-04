@@ -1,5 +1,6 @@
 package pl.futuredev.bakingapp.database;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
@@ -13,14 +14,17 @@ import java.util.List;
 public interface RecipeDao {
 
     @Query("SELECT * FROM recipe")
-    List<RecipePOJO> loadRecipeWidgetPOJO();
+    LiveData<List<RecipePOJO>> loadRecipe();
 
     @Insert
-    void insertRecipeWidget(RecipePOJO recipePOJO);
+    void insertRecipe(RecipePOJO recipePOJO);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void updateRecipeWidget(RecipePOJO recipePOJO);
+    void updateRecipe(RecipePOJO recipePOJO);
 
     @Delete
-    void deleteRecipeWidget(RecipePOJO recipePOJO);
+    void deleteRecipe(RecipePOJO recipePOJO);
+
+    @Query("SELECT * FROM recipe WHERE id = :recipeName")
+    LiveData<RecipePOJO> loadRecipeByID(int recipeName);
 }

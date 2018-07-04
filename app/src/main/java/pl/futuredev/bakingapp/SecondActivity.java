@@ -23,7 +23,7 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.second_activity);
 
         Recipe recipe = getIntent().getParcelableExtra("recipe");
-        int position = getIntent().getIntExtra("id", 0);
+        int position = getIntent().getIntExtra("clickedItemIndex", 0);
         replaceFragment(recipe, position);
     }
 

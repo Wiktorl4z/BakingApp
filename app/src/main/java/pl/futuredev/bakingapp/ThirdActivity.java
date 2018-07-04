@@ -1,14 +1,16 @@
 package pl.futuredev.bakingapp;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -32,6 +34,9 @@ import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.adapter.IngredientsAdapter;
 import pl.futuredev.bakingapp.database.RecipeDataBase;
 import pl.futuredev.bakingapp.database.RecipePOJO;
+import pl.futuredev.bakingapp.models.AddRecipeViewModel;
+import pl.futuredev.bakingapp.models.AddRecipeViewModelFactory;
+import pl.futuredev.bakingapp.models.AppExecutors;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
@@ -58,6 +63,8 @@ public class ThirdActivity extends AppCompatActivity {
     private String recipeName;
     boolean widgetChecked;
     private RecipeDataBase recipeDataBase;
+    private AddRecipeViewModelFactory addRecipeViewModelFactory;
+    private int recipeID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +74,10 @@ public class ThirdActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbarThird);
 
-        recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
 
         step = getIntent().getParcelableExtra("step");
-        recipeName = getIntent().getParcelableExtra("recipeName");
+        recipeID = Integer.parseInt(getIntent().getExtras().get("id").toString());
+        recipeName = getIntent().getStringExtra("recipeName");
         ingredients = getIntent().getParcelableArrayListExtra("ingredients");
 
         tvTitleDescription.setText(step.getShortDescription());
@@ -80,6 +87,19 @@ public class ThirdActivity extends AppCompatActivity {
         ingredientsRecyclerView.setLayoutManager(linearLayoutManager);
         adapter = new IngredientsAdapter(ingredients);
         ingredientsRecyclerView.setAdapter(adapter);
+    }
+
+    public void removingRecipeFromDatabase() {
+        addRecipeViewModelFactory = new AddRecipeViewModelFactory(recipeDataBase, recipeID);
+        final AddRecipeViewModel viewModel = ViewModelProviders.of(this, addRecipeViewModelFactory)
+                .get(AddRecipeViewModel.class);
+        viewModel.getRecipe().observe(this, new Observer<RecipePOJO>() {
+                    @Override
+                    public void onChanged(@Nullable RecipePOJO recipePOJO) {
+                        recipeDataBase.recipeDao().deleteRecipe(recipePOJO);
+                    }
+                }
+        );
     }
 
     @Override
@@ -107,13 +127,25 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     public void addToDatabase() {
-        recipePOJO = new RecipePOJO(recipeName, ingredients);
-        recipeDataBase.recipeDao().insertRecipeWidget(recipePOJO);
+        final RecipePOJO recipe = new RecipePOJO(recipeID, recipeName, ingredients);
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                recipeDataBase.recipeDao().insertRecipe(recipe);
+                finish();
+            }
+        });
     }
 
     public void removeFromDatabase() {
-        recipePOJO = new RecipePOJO(recipeName, ingredients);
-        recipeDataBase.recipeDao().deleteRecipeWidget(recipePOJO);
+        final RecipePOJO recipe = new RecipePOJO(recipeID, recipeName, ingredients);
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                recipeDataBase.recipeDao().deleteRecipe(recipe);
+                finish();
+            }
+        });
     }
 
     private void initializePlayer(Step step) {

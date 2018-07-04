@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     public void onClick(Recipe recipe, int clickedItemIndex) {
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("recipe", (Parcelable) recipe);
+        intent.putExtra("clickedItemIndex", clickedItemIndex);
         intent.putExtra("id", clickedItemIndex);
         startActivity(intent);
 

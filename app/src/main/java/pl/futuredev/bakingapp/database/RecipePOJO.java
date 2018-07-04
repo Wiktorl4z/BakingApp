@@ -19,20 +19,24 @@ public class RecipePOJO extends BaseObservable implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "recipe_id")
+    private int recipeID;
     @ColumnInfo(name = "recipe_name")
     private String name;
     @TypeConverters(IngredientConverter.class)
     @ColumnInfo(name = "ingredients")
     private List<Ingredient> ingredient;
 
-    public RecipePOJO(int id, String name, List<Ingredient> ingredient) {
+    public RecipePOJO(int id, int recipeID, String name, List<Ingredient> ingredient) {
         this.id = id;
+        this.recipeID = recipeID;
         this.name = name;
         this.ingredient = ingredient;
     }
 
     @Ignore
-    public RecipePOJO(String name, List<Ingredient> ingredient) {
+    public RecipePOJO(int recipeID, String name, List<Ingredient> ingredient) {
+        this.recipeID = recipeID;
         this.name = name;
         this.ingredient = ingredient;
     }
@@ -67,5 +71,13 @@ public class RecipePOJO extends BaseObservable implements Serializable {
 
     public void setIngredient(List<Ingredient> ingredient) {
         this.ingredient = ingredient;
+    }
+
+    public int getRecipeID() {
+        return recipeID;
+    }
+
+    public void setRecipeID(int recipeID) {
+        this.recipeID = recipeID;
     }
 }
