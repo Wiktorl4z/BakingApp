@@ -25,6 +25,6 @@ public interface RecipeDao {
     @Delete
     void deleteRecipe(RecipePOJO recipePOJO);
 
-    @Query("SELECT * FROM recipe WHERE id = :recipeName")
-    LiveData<RecipePOJO> loadRecipeByID(int recipeName);
+    @Query("SELECT * FROM recipe WHERE recipe_id = :recipeID")
+    LiveData<RecipePOJO> loadRecipeByID(int recipeID);
 }
