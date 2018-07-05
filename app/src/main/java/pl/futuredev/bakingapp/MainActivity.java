@@ -46,17 +46,11 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         internetReceiver = new InternetReceiver();
         service = HttpConnector.getService(APIService.class);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
-/*        myRecyclerView.setHasFixedSize(true);
-        myRecyclerView.setLayoutManager(linearLayoutManager);
-        myRecyclerView.setAdapter(adapter);*/
-
         service.getRecipes().enqueue(new Callback<List<Recipe>>() {
-
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 settingUpView(response);
@@ -90,11 +84,9 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     ;
 
     @Override
-    public void onClick(Recipe recipe, int clickedItemIndex) {
+    public void onClick(int clickedItemIndex) {
         Intent intent = new Intent(this, SecondActivity.class);
-        intent.putExtra("recipe", (Parcelable) recipe);
-        intent.putExtra("clickedItemIndex", clickedItemIndex);
-        intent.putExtra("id", clickedItemIndex);
+        intent.putExtra("recipe", recipes.get(clickedItemIndex));
         startActivity(intent);
 
     }

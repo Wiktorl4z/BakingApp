@@ -8,5 +8,5 @@ import pl.futuredev.bakingapp.models.Recipe;
 
 public interface IOnClickHandler {
 
-    void onClick(Recipe recipe, int clickedItemIndex);
+    void onClick(int clickedItemIndex);
 }

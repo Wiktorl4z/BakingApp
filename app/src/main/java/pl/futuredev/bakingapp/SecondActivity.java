@@ -23,13 +23,12 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.second_activity);
 
         Recipe recipe = getIntent().getParcelableExtra("recipe");
-        int position = getIntent().getIntExtra("clickedItemIndex", 0);
-        replaceFragment(recipe, position);
+        replaceFragment(recipe);
     }
 
-    private void replaceFragment(Recipe recipe, int itemId) {
+    private void replaceFragment(Recipe recipe) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, SecondActivityAdapter.getInstance(recipe, itemId));
+        ft.replace(R.id.container, SecondActivityAdapter.getInstance(recipe));
         ft.commit();
     }
 }

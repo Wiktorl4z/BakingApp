@@ -27,9 +27,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     Recipe recipe;
 
 
-    public RecipeAdapter(List<Recipe> recipe, Context context, IOnClickHandler onClickHandler) {
+    public RecipeAdapter(List<Recipe> recipes, Context context, IOnClickHandler onClickHandler) {
         this.onClickHandler = onClickHandler;
-        this.recipes = recipe;
+        this.recipes = recipes;
         this.context = context;
     }
 
@@ -37,8 +37,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         @BindView(R.id.iv_recipe)
         ImageView ivRecipe;
-        @BindView(R.id.tv_servings)
-        TextView tvServings;
         @BindView(R.id.tv_recipe_name)
         TextView tvRecipeName;
         @BindView(R.id.rl_single_recipe)
@@ -53,7 +51,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         @Override
         public void onClick(View v) {
             int clickPosition = getAdapterPosition();
-            onClickHandler.onClick(recipe, clickPosition);
+            onClickHandler.onClick(clickPosition);
         }
     }
 
@@ -68,7 +66,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ImageView ivRecipe = holder.ivRecipe;
-        TextView tvServings = holder.tvServings;
         TextView tvRecipeName = holder.tvRecipeName;
         RelativeLayout relativeLayout = holder.rlSingleRecipe;
 
@@ -97,7 +94,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             ivRecipe.setImageResource(R.drawable.cheesecake);
         }
 
-        tvServings.setText(context.getString(R.string.servings) + recipes.get(position).getServings());
         tvRecipeName.setText(recipes.get(position).getName());
 
     }

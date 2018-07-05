@@ -68,4 +68,6 @@ dependencies {
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.4'
 }

@@ -2,6 +2,7 @@
     <string name="app_name">BakingApp</string>
     <string name="image">image</string>
     <string name="servings">Servings: </string>
+    <string name="steps">Steps: </string>
 
     <!-- Navigation Menu -->
     <string name="item_vertical_stepper">Vertical Stepper (Item View)</string>

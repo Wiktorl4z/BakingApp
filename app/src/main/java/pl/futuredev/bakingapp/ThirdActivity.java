@@ -33,6 +33,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.adapter.IngredientsAdapter;
+import pl.futuredev.bakingapp.database.RecipeDao;
 import pl.futuredev.bakingapp.database.RecipeDataBase;
 import pl.futuredev.bakingapp.database.RecipePOJO;
 import pl.futuredev.bakingapp.models.AddRecipeViewModel;
@@ -75,6 +76,7 @@ public class ThirdActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbarThird);
 
+        recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
 
         step = getIntent().getParcelableExtra("step");
         recipeID = Integer.parseInt(getIntent().getExtras().get("id").toString());

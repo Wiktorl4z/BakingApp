@@ -45,11 +45,10 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         this.secondActivity = secondActivity;
     }
 
-    public static SecondActivityAdapter getInstance(Recipe recipe, int itemId) {
+    public static SecondActivityAdapter getInstance(Recipe recipe) {
         SecondActivityAdapter fragment = new SecondActivityAdapter();
         Bundle args = new Bundle();
         args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
-        args.putInt("clickedItemIndex", itemId);
         args.putInt("id", recipe.getId());
         args.putString("recipeName", recipe.getName());
         args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipe.getIngredients());
@@ -84,7 +83,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         Button prevButton = inflateView.findViewById(R.id.button_prev);
 
         step = steps.get(index);
-        ingredient = ingredients.get(index);
+     //   ingredient = ingredients.get(index);
 
         nextButton.setText(index == size() - 1 ? getString(R.string.complete) : getString(android.R.string.ok));
         nextButton.setOnClickListener(new View.OnClickListener() {
