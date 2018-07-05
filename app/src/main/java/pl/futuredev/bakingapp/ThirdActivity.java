@@ -63,7 +63,7 @@ public class ThirdActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecipePOJO recipePOJO;
     private String recipeName;
-    boolean widgetChecked;
+    private boolean widgetChecked;
     private RecipeDataBase recipeDataBase;
     private AddRecipeViewModelFactory addRecipeViewModelFactory;
     private int recipeID;
@@ -92,19 +92,6 @@ public class ThirdActivity extends AppCompatActivity {
         ingredientsRecyclerView.setAdapter(adapter);
     }
 
-    public void removingRecipeFromDatabase() {
-        addRecipeViewModelFactory = new AddRecipeViewModelFactory(recipeDataBase, recipeID);
-        final AddRecipeViewModel viewModel = ViewModelProviders.of(this, addRecipeViewModelFactory)
-                .get(AddRecipeViewModel.class);
-        viewModel.getRecipe().observe(this, new Observer<RecipePOJO>() {
-                    @Override
-                    public void onChanged(@Nullable RecipePOJO recipePOJO) {
-                        recipeDataBase.recipeDao().deleteRecipe(recipePOJO);
-                    }
-                }
-        );
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_third_activity, menu);
@@ -117,10 +104,8 @@ public class ThirdActivity extends AppCompatActivity {
             case R.id.action_settings:
                 if (!widgetChecked) {
                     addToDatabase();
-                    Toast.makeText(this, "Add to Widget", Toast.LENGTH_SHORT).show();
                 } else {
                     removeFromDatabase();
-                    Toast.makeText(this, "Widget Removed", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             default:
@@ -136,6 +121,7 @@ public class ThirdActivity extends AppCompatActivity {
                 recipeDataBase.recipeDao().insertRecipe(recipe);
                 widgetChecked = true;
                 finish();
+                showToast(getString(R.string.add_to_widget));
             }
         });
     }
@@ -148,8 +134,13 @@ public class ThirdActivity extends AppCompatActivity {
                 recipeDataBase.recipeDao().deleteRecipe(recipe);
                 widgetChecked = false;
                 finish();
+                showToast(getString(R.string.widget_removed));
             }
         });
+    }
+
+    public void showToast(final String toast) {
+        runOnUiThread(() -> Toast.makeText(this, toast, Toast.LENGTH_SHORT).show());
     }
 
     private void initializePlayer(Step step) {

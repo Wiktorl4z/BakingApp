@@ -21,7 +21,7 @@ public class ViewModel extends AndroidViewModel{
         super(application);
         RecipeDataBase recipeDataBase = RecipeDataBase.getInstance(this.getApplication());
         Log.d(TAG,application.getString(R.string.retrieving_recipes_from_db));
-        listRecipePOJO = recipeDataBase.recipeDao().loadRecipe();
+        listRecipePOJO = recipeDataBase.recipeDao().loadAllRecipes();
     }
 
     public LiveData<List<RecipePOJO>> getListRecipePOJO() {
