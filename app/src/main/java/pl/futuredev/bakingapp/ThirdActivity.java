@@ -63,10 +63,11 @@ public class ThirdActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecipePOJO recipePOJO;
     private String recipeName;
-    private boolean widgetChecked;
+    private static boolean widgetChecked;
     private RecipeDataBase recipeDataBase;
     private AddRecipeViewModelFactory addRecipeViewModelFactory;
     private int recipeID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,26 +115,24 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     public void addToDatabase() {
-        final RecipePOJO recipe = new RecipePOJO(recipeID, recipeName, ingredients);
+        recipePOJO = new RecipePOJO(recipeID, recipeName, ingredients);
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                recipeDataBase.recipeDao().insertRecipe(recipe);
+                recipeDataBase.recipeDao().insertRecipe(recipePOJO);
                 widgetChecked = true;
-                finish();
                 showToast(getString(R.string.add_to_widget));
             }
         });
     }
 
     public void removeFromDatabase() {
-        final RecipePOJO recipe = new RecipePOJO(recipeID, recipeName, ingredients);
+        recipePOJO = new RecipePOJO(recipeID, recipeName, ingredients);
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                recipeDataBase.recipeDao().deleteRecipe(recipe);
+                recipeDataBase.recipeDao().deleteRecipe(recipePOJO);
                 widgetChecked = false;
-                finish();
                 showToast(getString(R.string.widget_removed));
             }
         });
@@ -158,7 +157,6 @@ public class ThirdActivity extends AppCompatActivity {
             MediaSource mediaSource = buildMediaSource(uri);
             player.prepare(mediaSource, true, false);
         }
-
     }
 
     private MediaSource buildMediaSource(Uri uri) {
