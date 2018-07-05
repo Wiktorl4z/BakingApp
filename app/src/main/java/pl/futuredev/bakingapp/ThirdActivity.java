@@ -118,7 +118,6 @@ public class ThirdActivity extends AppCompatActivity {
                 if (!widgetChecked) {
                     addToDatabase();
                     Toast.makeText(this, "Add to Widget", Toast.LENGTH_SHORT).show();
-                    widgetChecked = true;
                 } else {
                     removeFromDatabase();
                     Toast.makeText(this, "Widget Removed", Toast.LENGTH_SHORT).show();
@@ -135,6 +134,7 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void run() {
                 recipeDataBase.recipeDao().insertRecipe(recipe);
+                widgetChecked = true;
                 finish();
             }
         });
@@ -146,6 +146,7 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void run() {
                 recipeDataBase.recipeDao().deleteRecipe(recipe);
+                widgetChecked = false;
                 finish();
             }
         });

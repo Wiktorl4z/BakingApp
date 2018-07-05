@@ -3,6 +3,7 @@ package pl.futuredev.bakingapp.database;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.databinding.BaseObservable;
@@ -12,13 +13,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
 import pl.futuredev.bakingapp.models.Ingredient;
 
-@Entity(tableName = "recipe")
+@Entity(tableName = "recipe", indices = {@Index(value = "recipe_id", unique = true)})
 public class RecipePOJO extends BaseObservable implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @NonNull
     @ColumnInfo(name = "recipe_id")
     private int recipeID;
     @ColumnInfo(name = "recipe_name")

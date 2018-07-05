@@ -16,7 +16,7 @@ public interface RecipeDao {
     @Query("SELECT * FROM recipe")
     LiveData<List<RecipePOJO>> loadRecipe();
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertRecipe(RecipePOJO recipePOJO);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
