@@ -1,8 +1,7 @@
-package pl.futuredev.bakingapp;
+package pl.futuredev.bakingapp.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,14 +9,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import pl.futuredev.bakingapp.adapter.RecipeAdapter;
-import pl.futuredev.bakingapp.models.Ingredient;
+import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.adapter.RecipeAdapter;
+import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 import pl.futuredev.bakingapp.service.APIService;
 import pl.futuredev.bakingapp.service.HttpConnector;
@@ -88,7 +87,8 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
         Intent intent = new Intent(this, SecondActivity.class);
         intent.putExtra("recipe", recipes.get(clickedItemIndex));
         startActivity(intent);
-
     }
+
+
 }
 

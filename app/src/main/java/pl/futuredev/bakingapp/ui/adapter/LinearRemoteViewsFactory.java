@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.adapter;
+package pl.futuredev.bakingapp.ui.adapter;
 
 import android.content.Context;
 import android.widget.RemoteViews;

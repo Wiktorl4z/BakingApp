@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.database;
+package pl.futuredev.bakingapp.database.converter;
 
 import android.arch.persistence.room.TypeConverter;
 

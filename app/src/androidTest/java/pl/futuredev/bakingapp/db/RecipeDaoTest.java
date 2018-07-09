@@ -14,10 +14,10 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import pl.futuredev.bakingapp.LiveDataTestUtil;
-import pl.futuredev.bakingapp.database.RecipeDao;
-import pl.futuredev.bakingapp.database.RecipeDataBase;
-import pl.futuredev.bakingapp.database.RecipePOJO;
-import pl.futuredev.bakingapp.models.AppExecutors;
+import pl.futuredev.bakingapp.database.dao.RecipeDao;
+import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
+import pl.futuredev.bakingapp.database.entity.RecipePOJO;
+import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.is;

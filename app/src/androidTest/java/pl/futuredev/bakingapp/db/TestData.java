@@ -3,7 +3,7 @@ package pl.futuredev.bakingapp.db;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.futuredev.bakingapp.database.RecipePOJO;
+import pl.futuredev.bakingapp.database.entity.RecipePOJO;
 import pl.futuredev.bakingapp.models.Ingredient;
 
 public class TestData {

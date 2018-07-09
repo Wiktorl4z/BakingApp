@@ -1,10 +1,12 @@
-package pl.futuredev.bakingapp;
+package pl.futuredev.bakingapp.ui;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
+
+import pl.futuredev.bakingapp.R;
 
 /**
  * Implementation of App Widget functionality.

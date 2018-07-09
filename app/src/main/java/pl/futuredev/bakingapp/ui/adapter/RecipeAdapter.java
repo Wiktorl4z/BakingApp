@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.adapter;
+package pl.futuredev.bakingapp.ui.adapter;
 
 import android.content.Context;
 import android.os.Handler;
@@ -15,9 +15,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.blurry.Blurry;
-import pl.futuredev.bakingapp.IOnClickHandler;
-import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.IOnClickHandler;
+import pl.futuredev.bakingapp.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 

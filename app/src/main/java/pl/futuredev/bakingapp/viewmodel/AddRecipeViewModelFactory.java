@@ -1,10 +1,11 @@
-package pl.futuredev.bakingapp.models;
+package pl.futuredev.bakingapp.viewmodel;
 
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-import pl.futuredev.bakingapp.database.RecipeDataBase;
+import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
+import pl.futuredev.bakingapp.viewmodel.AddRecipeViewModel;
 
 public class AddRecipeViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 

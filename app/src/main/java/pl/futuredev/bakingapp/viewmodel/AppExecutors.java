@@ -1,12 +1,10 @@
-package pl.futuredev.bakingapp.models;
+package pl.futuredev.bakingapp.viewmodel;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class AppExecutors {

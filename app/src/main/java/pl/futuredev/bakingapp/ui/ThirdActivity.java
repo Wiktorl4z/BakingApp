@@ -1,12 +1,9 @@
-package pl.futuredev.bakingapp;
+package pl.futuredev.bakingapp.ui;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,13 +29,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import pl.futuredev.bakingapp.adapter.IngredientsAdapter;
-import pl.futuredev.bakingapp.database.RecipeDao;
-import pl.futuredev.bakingapp.database.RecipeDataBase;
-import pl.futuredev.bakingapp.database.RecipePOJO;
-import pl.futuredev.bakingapp.models.AddRecipeViewModel;
-import pl.futuredev.bakingapp.models.AddRecipeViewModelFactory;
-import pl.futuredev.bakingapp.models.AppExecutors;
+import pl.futuredev.bakingapp.R;
+import pl.futuredev.bakingapp.database.entity.RecipePOJO;
+import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.adapter.IngredientsAdapter;
+import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
+import pl.futuredev.bakingapp.viewmodel.AddRecipeViewModelFactory;
+import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
@@ -61,7 +58,7 @@ public class ThirdActivity extends AppCompatActivity {
     private Step step;
     private List<Ingredient> ingredients;
     private RecyclerView.Adapter adapter;
-    private RecipePOJO recipePOJO;
+    private RecipePOJO recipe;
     private String recipeName;
     private static boolean widgetChecked;
     private RecipeDataBase recipeDataBase;
@@ -115,11 +112,11 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     public void addToDatabase() {
-        recipePOJO = new RecipePOJO(recipeID, recipeName, ingredients);
+        recipe = new RecipePOJO(recipeID, recipeName, ingredients);
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                recipeDataBase.recipeDao().insertRecipe(recipePOJO);
+                recipeDataBase.recipeDao().insertRecipe(recipe);
                 widgetChecked = true;
                 showToast(getString(R.string.add_to_widget));
             }
@@ -127,11 +124,11 @@ public class ThirdActivity extends AppCompatActivity {
     }
 
     public void removeFromDatabase() {
-        recipePOJO = new RecipePOJO(recipeID, recipeName, ingredients);
+        recipe = new RecipePOJO(recipeID, recipeName, ingredients);
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                recipeDataBase.recipeDao().deleteRecipe(recipePOJO);
+                recipeDataBase.recipeDao().deleteRecipe(recipe);
                 widgetChecked = false;
                 showToast(getString(R.string.widget_removed));
             }

@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.adapter;
+package pl.futuredev.bakingapp.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

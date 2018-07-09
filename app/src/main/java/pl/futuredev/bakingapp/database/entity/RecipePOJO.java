@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.database;
+package pl.futuredev.bakingapp.database.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.annotations.NonNull;
+import pl.futuredev.bakingapp.database.converter.IngredientConverter;
 import pl.futuredev.bakingapp.models.Ingredient;
 
 @Entity(tableName = "recipe", indices = {@Index(value = "recipe_id", unique = true)})

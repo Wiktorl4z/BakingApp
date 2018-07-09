@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.database;
+package pl.futuredev.bakingapp.database.entity;
 
 import android.arch.persistence.db.SupportSQLiteOpenHelper;
 import android.arch.persistence.room.Database;
@@ -12,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import pl.futuredev.bakingapp.R;
+import pl.futuredev.bakingapp.database.converter.IngredientConverter;
+import pl.futuredev.bakingapp.database.dao.RecipeDao;
 
 @Database(entities = {RecipePOJO.class}, version = 6, exportSchema = false)
 @TypeConverters({IngredientConverter.class})

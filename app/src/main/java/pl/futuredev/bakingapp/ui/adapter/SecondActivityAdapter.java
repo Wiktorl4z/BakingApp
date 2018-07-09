@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.adapter;
+package pl.futuredev.bakingapp.ui.adapter;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,16 +17,15 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import moe.feng.common.stepperview.IStepperAdapter;
 import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
 import pl.futuredev.bakingapp.R;
-import pl.futuredev.bakingapp.SecondActivity;
-import pl.futuredev.bakingapp.ThirdActivity;
-import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.SecondActivity;
+import pl.futuredev.bakingapp.ui.ThirdActivity;
+import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
 public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
