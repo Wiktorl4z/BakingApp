@@ -67,6 +67,7 @@ public class RecipeDaoTest {
 
     @Test
     public void getRecipesAfterDelete() throws InterruptedException {
+        recipeDao.insertRecipe(PRODUCT_ENTITY);
         recipeDao.deleteRecipe(PRODUCT_ENTITY);
         List<RecipePOJO> products = LiveDataTestUtil.getValue(recipeDao.loadAllRecipes());
         assertThat(products.size(), is(0));

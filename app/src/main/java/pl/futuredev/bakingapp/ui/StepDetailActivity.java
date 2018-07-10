@@ -39,7 +39,7 @@ import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
-public class ThirdActivity extends AppCompatActivity {
+public class StepDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.video_view)
     PlayerView videoView;
@@ -100,15 +100,24 @@ public class ThirdActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                if (!widgetChecked) {
-                    addToDatabase();
-                } else {
-                    removeFromDatabase();
-                }
+                checkingObjectInDataBase();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void checkingObjectInDataBase() {
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                if (recipeDataBase.recipeDao().loadRecipeByIDRecipePOJO(recipeID) != null) {
+                    removeFromDatabase();
+                } else {
+                    addToDatabase();
+                }
+            }
+        });
     }
 
     public void addToDatabase() {
@@ -117,7 +126,6 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void run() {
                 recipeDataBase.recipeDao().insertRecipe(recipe);
-                widgetChecked = true;
                 showToast(getString(R.string.add_to_widget));
             }
         });
@@ -129,7 +137,6 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void run() {
                 recipeDataBase.recipeDao().deleteRecipe(recipe);
-                widgetChecked = false;
                 showToast(getString(R.string.widget_removed));
             }
         });

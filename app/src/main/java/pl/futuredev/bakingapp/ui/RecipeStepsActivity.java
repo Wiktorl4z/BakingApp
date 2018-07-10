@@ -9,7 +9,7 @@ import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
 import pl.futuredev.bakingapp.ui.adapter.SecondActivityAdapter;
 
-public class SecondActivity extends AppCompatActivity {
+public class RecipeStepsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

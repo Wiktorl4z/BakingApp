@@ -23,8 +23,8 @@ import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
-import pl.futuredev.bakingapp.ui.SecondActivity;
-import pl.futuredev.bakingapp.ui.ThirdActivity;
+import pl.futuredev.bakingapp.ui.RecipeStepsActivity;
+import pl.futuredev.bakingapp.ui.StepDetailActivity;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
@@ -33,15 +33,15 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
     private VerticalStepperView mVerticalStepperView;
     private List<Step> steps;
     private Context context;
-    private SecondActivity secondActivity;
+    private RecipeStepsActivity recipeStepsActivity;
     private String recipeName;
     private List<Ingredient> ingredients;
     private Step step;
     private Ingredient ingredient;
     private int recipeID;
 
-    public void setSecondActivity(SecondActivity secondActivity) {
-        this.secondActivity = secondActivity;
+    public void setRecipeStepsActivity(RecipeStepsActivity recipeStepsActivity) {
+        this.recipeStepsActivity = recipeStepsActivity;
     }
 
     public static SecondActivityAdapter getInstance(Recipe recipe) {
@@ -99,7 +99,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
                             });
                     alertbox.show();
                 } else {
-                    Intent intent = new Intent(context, ThirdActivity.class);
+                    Intent intent = new Intent(context, StepDetailActivity.class);
                     intent.putExtra("recipeName", recipeName);
                     intent.putExtra("step", step);
                     intent.putExtra("id", recipeID);

@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements IOnClickHandler {
+public class RecipeActivity extends AppCompatActivity implements IOnClickHandler {
 
     private static final String TAG = "MyActivity";
     @BindView(R.id.my_recycler_view)
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
 
             @Override
             public void onFailure(Call<List<Recipe>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT)
+                Toast.makeText(RecipeActivity.this, t.getMessage(), Toast.LENGTH_SHORT)
                         .show();
                 Log.d(getLocalClassName(), t.getMessage());
             }
@@ -67,12 +67,12 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
     private void settingUpView(Response<List<Recipe>> response) {
         if (response.isSuccessful()) {
             recipes = response.body();
-            adapter = new RecipeAdapter(recipes, getApplicationContext(), MainActivity.this::onClick);
+            adapter = new RecipeAdapter(recipes, getApplicationContext(), RecipeActivity.this::onClick);
             myRecyclerView.setLayoutManager(linearLayoutManager);
             myRecyclerView.setAdapter(adapter);
         } else {
             try {
-                Toast.makeText(MainActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT)
+                Toast.makeText(RecipeActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT)
                         .show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements IOnClickHandler {
 
     @Override
     public void onClick(int clickedItemIndex) {
-        Intent intent = new Intent(this, SecondActivity.class);
+        Intent intent = new Intent(this, RecipeStepsActivity.class);
         intent.putExtra("recipe", recipes.get(clickedItemIndex));
         startActivity(intent);
     }

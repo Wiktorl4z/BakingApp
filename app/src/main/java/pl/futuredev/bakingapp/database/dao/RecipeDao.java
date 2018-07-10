@@ -29,4 +29,7 @@ public interface RecipeDao {
 
     @Query("SELECT * FROM recipe WHERE recipe_id = :recipeID")
     LiveData<RecipePOJO> loadRecipeByID(int recipeID);
+
+    @Query("SELECT * FROM recipe WHERE recipe_id = :recipeID")
+    RecipePOJO loadRecipeByIDRecipePOJO(int recipeID);
 }
