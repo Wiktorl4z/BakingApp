@@ -111,8 +111,9 @@ public class StepDetailActivity extends AppCompatActivity {
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
-                if (recipeDataBase.recipeDao().loadRecipeByIDRecipePOJO(recipeID) != null) {
-                    removeFromDatabase();
+                RecipePOJO recipe = recipeDataBase.recipeDao().loadRecipeByIDRecipePOJO(recipeID);
+                if (recipe != null) {
+                    removeFromDatabase(recipe);
                 } else {
                     addToDatabase();
                 }
@@ -131,8 +132,7 @@ public class StepDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void removeFromDatabase() {
-        recipe = new RecipePOJO(recipeID, recipeName, ingredients);
+    public void removeFromDatabase(RecipePOJO recipe) {
         AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
