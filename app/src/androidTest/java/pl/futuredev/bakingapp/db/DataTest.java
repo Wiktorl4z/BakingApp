@@ -6,7 +6,7 @@ import java.util.List;
 import pl.futuredev.bakingapp.database.entity.RecipePOJO;
 import pl.futuredev.bakingapp.models.Ingredient;
 
-public class TestData {
+public class DataTest {
 
 
     static Ingredient ingredient = new Ingredient(1.0, "onion", "tree");

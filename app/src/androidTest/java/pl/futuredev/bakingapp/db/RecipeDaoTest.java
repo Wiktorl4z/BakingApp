@@ -22,7 +22,7 @@ import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static pl.futuredev.bakingapp.db.TestData.PRODUCT_ENTITY;
+import static pl.futuredev.bakingapp.db.DataTest.PRODUCT_ENTITY;
 
 @RunWith(AndroidJUnit4.class)
 public class RecipeDaoTest {
