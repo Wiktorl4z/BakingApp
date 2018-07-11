@@ -1,7 +1,6 @@
 package pl.futuredev.bakingapp.ui;
 
 import android.annotation.SuppressLint;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,14 +30,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.R;
-import pl.futuredev.bakingapp.database.entity.RecipePOJO;
-import pl.futuredev.bakingapp.models.Recipe;
-import pl.futuredev.bakingapp.ui.adapter.IngredientsAdapter;
 import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
-import pl.futuredev.bakingapp.viewmodel.AddRecipeViewModelFactory;
-import pl.futuredev.bakingapp.viewmodel.AppExecutors;
+import pl.futuredev.bakingapp.database.entity.RecipePOJO;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
+import pl.futuredev.bakingapp.ui.adapter.IngredientsAdapter;
+import pl.futuredev.bakingapp.viewmodel.AddRecipeViewModelFactory;
+import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 
 public class StepDetailActivity extends AppCompatActivity {
 
@@ -53,6 +52,8 @@ public class StepDetailActivity extends AppCompatActivity {
     RecyclerView ingredientsRecyclerView;
     @BindView(R.id.toolbarThird)
     Toolbar toolbarThird;
+    @BindView(R.id.iv_detail)
+    ImageView ivDetail;
     private ExoPlayer player;
     private LinearLayoutManager linearLayoutManager;
     private Step step;
@@ -149,9 +150,10 @@ public class StepDetailActivity extends AppCompatActivity {
     private void initializePlayer(Step step) {
         Uri uri = Uri.parse(step.getVideoURL());
         if (uri == null || uri.equals(Uri.EMPTY)) {
-            videoView.setDefaultArtwork(BitmapFactory.decodeResource
-                    (getResources(), R.drawable.brownies));
+            videoView.setVisibility(View.GONE);
+            ivDetail.setImageResource(R.drawable.baking);
         } else {
+            ivDetail.setVisibility(View.GONE);
             player = ExoPlayerFactory.newSimpleInstance(
                     new DefaultRenderersFactory(this),
                     new DefaultTrackSelector(), new DefaultLoadControl());
