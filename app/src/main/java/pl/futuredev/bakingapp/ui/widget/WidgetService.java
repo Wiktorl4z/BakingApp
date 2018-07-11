@@ -16,7 +16,6 @@ import pl.futuredev.bakingapp.database.entity.RecipePOJO;
 public class WidgetService extends RemoteViewsService {
 
     private RecipeDataBase recipeDataBase;
-    private LiveData<List<RecipePOJO>> recipes;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -26,6 +25,7 @@ public class WidgetService extends RemoteViewsService {
     public class WidgetViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private Context context;
+        List<RecipePOJO> recipes;
 
         public WidgetViewsFactory(Context context) {
             this.context = context;
@@ -39,7 +39,7 @@ public class WidgetService extends RemoteViewsService {
         @Override
         public void onDataSetChanged() {
             recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
-            recipes = recipeDataBase.recipeDao().loadAllRecipes();
+            recipes = recipeDataBase.recipeDao().loadAllRecipesSync();
         }
 
         @Override
@@ -48,7 +48,7 @@ public class WidgetService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return (recipes != null) ? recipes.getValue().size() : 0;
+            return (recipes != null) ? recipes.size() : 0;
         }
 
         @Override
@@ -57,8 +57,8 @@ public class WidgetService extends RemoteViewsService {
             if (recipes == null) return null;
 
 
-            String recipeName = recipes.getValue().get(position).getName();
-            String recipeIngredient = recipes.getValue().get(position).getName();
+            String recipeName = recipes.get(position).getName();
+            String recipeIngredient = recipes.get(position).getName();
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_item);
 
