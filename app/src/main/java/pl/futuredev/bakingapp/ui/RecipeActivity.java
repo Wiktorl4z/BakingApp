@@ -45,8 +45,6 @@ public class RecipeActivity extends AppCompatActivity implements IOnClickHandler
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        RecyclerView myRecyclerView = findViewById(R.id.my_recycler_view);
-
         internetReceiver = new InternetReceiver();
         service = HttpConnector.getService(APIService.class);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -81,9 +79,7 @@ public class RecipeActivity extends AppCompatActivity implements IOnClickHandler
                 e.printStackTrace();
             }
         }
-    }
-
-    ;
+    };
 
     @Override
     public void onClick(int clickedItemIndex) {
