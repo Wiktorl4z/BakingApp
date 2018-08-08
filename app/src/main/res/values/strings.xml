@@ -1,3 +1,33 @@
 <resources>
     <string name="app_name">BakingApp</string>
+    <string name="image">image</string>
+    <string name="servings">Servings: </string>
+    <string name="steps">Steps: </string>
+
+    <!-- Navigation Menu -->
+    <string name="item_vertical_stepper">Vertical Stepper (Item View)</string>
+    <string name="item_vertical_stepper_adapter">Vertical Stepper (Adapter)</string>
+
+    <!-- Vertical Stepper View Sample Item -->
+    <string name="content_step_0">This is the first step. Click OK button to next step.\n\nTest Message.</string>
+    <string name="content_step_1">This is the second step. Click OK button to next step or Cancel button to previous step.\n\nThe summary text of each step is optional. If you haven\'t set, summary view won\'t be displayed.</string>
+    <string name="content_step_2">This is the last step. You can finish steps now.</string>
+    <string name="back">Back</string>
+    <string name="close">Close</string>
+    <string name="complete">Complete</string>
+    <string name="url_mp3">https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffd974_-intro-creampie/-intro-creampie.mp4</string>
+    <string name="well_done">Congratulation, well done!</string>
+    <string name="you_have_completed">You have completed all steps for </string>
+    <string name="toggle_animation_button">Toggle Animation</string>
+    <string name="ingredients">ingredients</string>
+    <string name="quantity">Quantity:</string>
+    <string name="ingredient">Ingredient:</string>
+    <string name="measure">Measure:</string>
+    <string name="appwidget_text">BakingApp</string>
+    <string name="add_widget">Add widget</string>
+    <string name="creating_new_database_instance">Creating new database instance</string>
+    <string name="getting_database_instance">Getting the database instance</string>
+    <string name="retrieving_recipes_from_db">Actively retrieving recipes from the DataBase</string>
+    <string name="widget_removed">Widget Removed</string>
+    <string name="add_to_widget">Add to Widget</string>
 </resources>
