@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.ui;
+package pl.futuredev.bakingapp.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -46,7 +46,7 @@ public class StepDetailActivity extends AppCompatActivity {
     TextView tvTitleDescription;
     @BindView(R.id.tv_step_description)
     TextView tvStepDescription;
-    @BindView(R.id.tv_ingredients_left)
+    @BindView(R.id.tv_ingredients_text)
     TextView tvIngredientsLeft;
     @BindView(R.id.ingredients_recycler_view)
     RecyclerView ingredientsRecyclerView;
@@ -66,14 +66,16 @@ public class StepDetailActivity extends AppCompatActivity {
     private AddRecipeViewModelFactory addRecipeViewModelFactory;
     private int recipeID;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.details_activity);
+        setContentView(R.layout.fragment_detail);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbarThird);
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
 
         recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
 

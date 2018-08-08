@@ -8,8 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import pl.futuredev.bakingapp.R;
-import pl.futuredev.bakingapp.ui.RecipeActivity;
-import pl.futuredev.bakingapp.ui.StepDetailActivity;
+import pl.futuredev.bakingapp.ui.activities.RecipeActivity;
 
 /**
  * Implementation of App Widget functionality.

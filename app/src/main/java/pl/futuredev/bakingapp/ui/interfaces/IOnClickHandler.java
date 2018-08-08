@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.ui;
+package pl.futuredev.bakingapp.ui.interfaces;
 
 public interface IOnClickHandler {
 

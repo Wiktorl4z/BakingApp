@@ -1,4 +1,4 @@
-package pl.futuredev.bakingapp.ui.adapter;
+package pl.futuredev.bakingapp.ui.fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,12 +23,12 @@ import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
-import pl.futuredev.bakingapp.ui.RecipeStepsActivity;
-import pl.futuredev.bakingapp.ui.StepDetailActivity;
+import pl.futuredev.bakingapp.ui.activities.RecipeStepsActivity;
+import pl.futuredev.bakingapp.ui.activities.StepDetailActivity;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 
-public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
+public class StepsFragment extends Fragment implements IStepperAdapter {
 
     private VerticalStepperView mVerticalStepperView;
     private List<Step> steps;
@@ -44,8 +44,8 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         this.recipeStepsActivity = recipeStepsActivity;
     }
 
-    public static SecondActivityAdapter getInstance(Recipe recipe) {
-        SecondActivityAdapter fragment = new SecondActivityAdapter();
+    public static StepsFragment getInstance(Recipe recipe) {
+        StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
         args.putInt("id", recipe.getId());
@@ -59,6 +59,7 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.vertical_stepper_adapter, parent, false);
+
     }
 
     @Override
@@ -82,8 +83,6 @@ public class SecondActivityAdapter extends Fragment implements IStepperAdapter {
         Button prevButton = inflateView.findViewById(R.id.button_prev);
 
         step = steps.get(index);
-     //   ingredient = ingredients.get(index);
-
         nextButton.setText(index == size() - 1 ? getString(R.string.complete) : getString(android.R.string.ok));
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -16,7 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.blurry.Blurry;
 import pl.futuredev.bakingapp.models.Recipe;
-import pl.futuredev.bakingapp.ui.IOnClickHandler;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 import pl.futuredev.bakingapp.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
@@ -75,7 +75,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             @Override
             public void run() {
                 Blurry.with(context)
-                        .radius(20)
+                        .radius(1)
                         .sampling(2)
                         .animate(500)
                         .async()

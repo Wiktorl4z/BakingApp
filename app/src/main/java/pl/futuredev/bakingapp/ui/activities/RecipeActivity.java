@@ -1,20 +1,22 @@
-package pl.futuredev.bakingapp.ui;
+package pl.futuredev.bakingapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 import pl.futuredev.bakingapp.ui.adapter.RecipeAdapter;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
@@ -37,7 +39,8 @@ public class RecipeActivity extends AppCompatActivity implements IOnClickHandler
     private Step step;
     private List<Recipe> recipes;
     private List<Ingredient> ingredient;
-
+    private boolean tablet;
+    private GridLayoutManager gridLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +48,19 @@ public class RecipeActivity extends AppCompatActivity implements IOnClickHandler
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        View decorView = getWindow().getDecorView();
+        // Hide the status bar.
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+        decorView.setSystemUiVisibility(uiOptions);
+
         internetReceiver = new InternetReceiver();
         service = HttpConnector.getService(APIService.class);
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        gridLayoutManager = new GridLayoutManager(this, 2);
 
+        if (findViewById(R.id.activity_main_tablet) != null){
+            tablet = true;
+        }
 
         service.getRecipes().enqueue(new Callback<List<Recipe>>() {
             @Override
@@ -68,18 +80,19 @@ public class RecipeActivity extends AppCompatActivity implements IOnClickHandler
     private void settingUpView(Response<List<Recipe>> response) {
         if (response.isSuccessful()) {
             recipes = response.body();
-            adapter = new RecipeAdapter(recipes, getApplicationContext(), RecipeActivity.this::onClick);
-            myRecyclerView.setLayoutManager(linearLayoutManager);
-            myRecyclerView.setAdapter(adapter);
-        } else {
-            try {
-                Toast.makeText(RecipeActivity.this, response.errorBody().string(), Toast.LENGTH_SHORT)
-                        .show();
-            } catch (IOException e) {
-                e.printStackTrace();
+            if (tablet){
+                adapter = new RecipeAdapter(recipes, getApplicationContext(), RecipeActivity.this::onClick);
+                myRecyclerView.setLayoutManager(gridLayoutManager);
+                myRecyclerView.setAdapter(adapter);
+            } else{
+                adapter = new RecipeAdapter(recipes, getApplicationContext(), RecipeActivity.this::onClick);
+                myRecyclerView.setLayoutManager(linearLayoutManager);
+                myRecyclerView.setAdapter(adapter);
             }
         }
-    };
+    }
+
+    ;
 
     @Override
     public void onClick(int clickedItemIndex) {

@@ -12,6 +12,7 @@ import java.util.List;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
 import pl.futuredev.bakingapp.database.entity.RecipePOJO;
+import pl.futuredev.bakingapp.models.Ingredient;
 
 public class WidgetService extends RemoteViewsService {
 
@@ -58,14 +59,15 @@ public class WidgetService extends RemoteViewsService {
 
 
             String recipeName = recipes.get(position).getName();
-            String recipeIngredient = recipes.get(position).getName();
+         //   Ingredient ingredient = ingre.get(position).getIngredient();
+
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_item);
 
             remoteViews.setTextViewText(R.id.tv_widget_recipe_name, recipeName);
             remoteViews.setViewVisibility(R.id.tv_widget_recipe_name, View.VISIBLE);
 
-            remoteViews.setTextViewText(R.id.tv_widget_recipe_details, recipeIngredient);
+       //     remoteViews.setTextViewText(R.id.tv_widget_recipe_details, (CharSequence) recipeIngredient);
             remoteViews.setViewVisibility(R.id.tv_widget_recipe_details, View.VISIBLE);
 
             Intent fillIntent = new Intent();
@@ -73,6 +75,7 @@ public class WidgetService extends RemoteViewsService {
             remoteViews.setOnClickFillInIntent(R.id.tv_widget_recipe_details, fillIntent);
 
             return remoteViews;
+
         }
 
         @Override
