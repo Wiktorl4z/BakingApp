@@ -54,8 +54,8 @@ public class StepDetailActivity extends AppCompatActivity {
     TextView tvIngredientsLeft;
     @BindView(R.id.ingredients_recycler_view)
     RecyclerView ingredientsRecyclerView;
-    @BindView(R.id.toolbarThird)
-    Toolbar toolbarThird;
+    @BindView(R.id.tool_bar)
+    Toolbar toolbar;
     @BindView(R.id.iv_detail)
     ImageView ivDetail;
     private ExoPlayer player;
@@ -79,10 +79,7 @@ public class StepDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
-        setSupportActionBar(toolbarThird);
-        View decorView = getWindow().getDecorView();
-        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        setSupportActionBar(toolbar);
 
         if (savedInstanceState != null) {
             playerPosition = savedInstanceState.getLong(PLAYER_POSITION);

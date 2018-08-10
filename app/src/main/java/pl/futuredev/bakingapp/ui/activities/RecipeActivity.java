@@ -2,6 +2,10 @@ package pl.futuredev.bakingapp.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +20,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.test.SimpleIdlingResource;
+import pl.futuredev.bakingapp.ui.fragments.StepsFragment;
 import pl.futuredev.bakingapp.ui.interfaces.IOnClick;
 import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 import pl.futuredev.bakingapp.ui.adapter.RecipeAdapter;
@@ -42,16 +48,34 @@ public class RecipeActivity extends AppCompatActivity implements IOnClick {
     private boolean tablet;
     private GridLayoutManager gridLayoutManager;
 
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
+
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
+    }
+
+    @VisibleForTesting
+    @NonNull
+    public static RecipeActivity getInstance() {
+        return new RecipeActivity();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        View decorView = getWindow().getDecorView();
+     /*   View decorView = getWindow().getDecorView();
         // Hide the status bar.
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-        decorView.setSystemUiVisibility(uiOptions);
+        decorView.setSystemUiVisibility(uiOptions);*/
 
         internetReceiver = new InternetReceiver();
         service = HttpConnector.getService(APIService.class);
