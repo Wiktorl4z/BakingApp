@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="90dp"
             android:layout_marginTop="8dp"
-            android:hint="QUanity"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,7 +58,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="90dp"
             android:layout_marginTop="8dp"
-            android:hint="measure"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_quantity" />
 
@@ -69,7 +67,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="90dp"
             android:layout_marginTop="8dp"
-            android:hint="ingredient"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_measure" />
     </android.support.constraint.ConstraintLayout>
