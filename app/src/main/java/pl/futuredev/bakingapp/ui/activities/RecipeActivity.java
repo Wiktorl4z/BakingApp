@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClick;
 import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 import pl.futuredev.bakingapp.ui.adapter.RecipeAdapter;
 import pl.futuredev.bakingapp.models.Ingredient;
@@ -27,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RecipeActivity extends AppCompatActivity implements IOnClickHandler {
+public class RecipeActivity extends AppCompatActivity implements IOnClick {
 
     private static final String TAG = "MyActivity";
     @BindView(R.id.my_recycler_view)
@@ -94,10 +95,11 @@ public class RecipeActivity extends AppCompatActivity implements IOnClickHandler
 
     ;
 
+
     @Override
-    public void onClick(int clickedItemIndex) {
+    public void onClick(int position) {
         Intent intent = new Intent(this, RecipeStepsActivity.class);
-        intent.putExtra("recipe", recipes.get(clickedItemIndex));
+        intent.putExtra("recipe", recipes.get(position));
         startActivity(intent);
     }
 

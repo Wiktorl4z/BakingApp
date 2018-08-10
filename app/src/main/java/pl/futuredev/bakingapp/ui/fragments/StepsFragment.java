@@ -27,6 +27,7 @@ import pl.futuredev.bakingapp.ui.activities.RecipeStepsActivity;
 import pl.futuredev.bakingapp.ui.activities.StepDetailActivity;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 
 public class StepsFragment extends Fragment implements IStepperAdapter {
 
@@ -39,18 +40,36 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     private Step step;
     private Ingredient ingredient;
     private int recipeID;
+    private IOnClickHandler iOnClickHandler;
+    private Boolean tablet;
 
     public void setRecipeStepsActivity(RecipeStepsActivity recipeStepsActivity) {
         this.recipeStepsActivity = recipeStepsActivity;
     }
 
-    public static StepsFragment getInstance(Recipe recipe) {
+    public StepsFragment() {
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            iOnClickHandler = (IOnClickHandler) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    public static StepsFragment getInstance(Recipe recipe, Boolean tablet) {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
         args.putInt("id", recipe.getId());
         args.putString("recipeName", recipe.getName());
         args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipe.getIngredients());
+        args.putBoolean("tablet", tablet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,6 +88,7 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
             recipeName = getArguments().getString("recipeName");
             ingredients = getArguments().getParcelableArrayList("ingredients");
             recipeID = getArguments().getInt("id");
+            tablet = getArguments().getBoolean("tablet");
         }
 
         mVerticalStepperView = view.findViewById(R.id.vertical_stepper_view);
@@ -98,12 +118,16 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
                             });
                     alertbox.show();
                 } else {
-                    Intent intent = new Intent(context, StepDetailActivity.class);
-                    intent.putExtra("recipeName", recipeName);
-                    intent.putExtra("step", step);
-                    intent.putExtra("id", recipeID);
-                    intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
-                    startActivity(intent);
+                    if (tablet){
+                        iOnClickHandler.onClickStep(index,recipeName,step,recipeID,ingredients);
+                    } else {
+                        Intent intent = new Intent(context, StepDetailActivity.class);
+                        intent.putExtra("recipeName", recipeName);
+                        intent.putExtra("step", step);
+                        intent.putExtra("id", recipeID);
+                        intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
+                        startActivity(intent);
+                    }
                 }
             }
         });

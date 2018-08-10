@@ -69,7 +69,7 @@ public class StepDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_detail);
+        setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbarThird);

@@ -13,8 +13,9 @@ import pl.futuredev.bakingapp.models.Recipe;
 import pl.futuredev.bakingapp.models.Step;
 import pl.futuredev.bakingapp.ui.fragments.DetailFragment;
 import pl.futuredev.bakingapp.ui.fragments.StepsFragment;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 
-public class RecipeStepsActivity extends AppCompatActivity {
+public class RecipeStepsActivity extends AppCompatActivity implements IOnClickHandler{
 
     private boolean tablet;
     private Step step;
@@ -27,36 +28,27 @@ public class RecipeStepsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second_fragment);
 
-
-       /* step = getIntent().getParcelableExtra("step");
-        recipeID = Integer.parseInt(getIntent().getExtras().get("id").toString());
-        recipeName = getIntent().getStringExtra("recipeName");
-        ingredients = getIntent().getParcelableArrayListExtra("ingredients");*/
-
-
         Recipe recipe = getIntent().getParcelableExtra("recipe");
 
-        if (findViewById(R.id.container) != null) {
+        if (findViewById(R.id.detail_fragment) != null) {
             tablet = true;
-            replaceStepFragment(recipe);
+            replaceStepFragment(recipe, tablet);
         } else {
             tablet = false;
-            replaceStepFragment(recipe);
+            replaceStepFragment(recipe,tablet);
         }
-
     }
 
-    private void replaceStepFragment(Recipe recipe) {
+    private void replaceStepFragment(Recipe recipe, boolean tablet) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, StepsFragment.getInstance(recipe));
+        ft.replace(R.id.container, StepsFragment.getInstance(recipe,tablet));
         ft.commit();
     }
 
-    private void replaceDetailFragment(Step step,List<Ingredient> ingredients,String recipeName,int recipeID) {
+    @Override
+    public void onClickStep(int index, String recipeName, Step step, int recipeID, List<Ingredient> ingredients) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.container, DetailFragment.getInstance(step,ingredients,recipeName,recipeID));
+        ft.replace(R.id.detail_fragment, DetailFragment.getInstance(step,ingredients,recipeName,recipeID));
         ft.commit();
     }
-
-
 }

@@ -16,18 +16,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.blurry.Blurry;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClick;
 import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 import pl.futuredev.bakingapp.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    private final IOnClickHandler onClickHandler;
+    private final IOnClick onClickHandler;
     private List<Recipe> recipes;
     Context context;
     Recipe recipe;
 
 
-    public RecipeAdapter(List<Recipe> recipes, Context context, IOnClickHandler onClickHandler) {
+    public RecipeAdapter(List<Recipe> recipes, Context context, IOnClick onClickHandler) {
         this.onClickHandler = onClickHandler;
         this.recipes = recipes;
         this.context = context;

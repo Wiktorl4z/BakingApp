@@ -1,7 +1,6 @@
 package pl.futuredev.bakingapp.ui.fragments;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -41,7 +40,6 @@ import pl.futuredev.bakingapp.ui.adapter.IngredientsAdapter;
 
 public class DetailFragment extends Fragment {
 
-    OnImageClickListener mCallback;
     private static final String PLAYER_POSITION = "exo_position";
     private static final String PLAYER_READY = "exo_ready";
 
@@ -73,21 +71,6 @@ public class DetailFragment extends Fragment {
         unbinder.unbind();
     }
 
-    public interface OnImageClickListener {
-        void onImageSelected(int position);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        try {
-            mCallback = (OnImageClickListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnImageClickListener");
-        }
-    }
 
     public DetailFragment() {
     }
@@ -117,7 +100,7 @@ public class DetailFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            step = getArguments().getParcelable("steps");
+            step = getArguments().getParcelable("step");
             recipeName = getArguments().getString("recipeName");
             ingredients = getArguments().getParcelableArrayList("ingredients");
             recipeID = getArguments().getInt("id");
@@ -135,7 +118,6 @@ public class DetailFragment extends Fragment {
     }
 
     private void settingUpView(View rootView) {
-        player = rootView.findViewById(R.id.video_view);
         ivDetail = rootView.findViewById(R.id.iv_detail);
         tvShortDescription = rootView.findViewById(R.id.tv_short_description);
         tvStepDescription = rootView.findViewById(R.id.tv_step_description);
@@ -143,7 +125,6 @@ public class DetailFragment extends Fragment {
 
         tvShortDescription.setText(step.getShortDescription());
         tvStepDescription.setText(step.getDescription());
-
     }
 
     private void initializePlayer(Step step) {
