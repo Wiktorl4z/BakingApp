@@ -30,7 +30,6 @@ import retrofit2.Response;
 
 public class RecipeActivity extends AppCompatActivity implements IOnClick {
 
-    private static final String TAG = "MyActivity";
     @BindView(R.id.my_recycler_view)
     RecyclerView myRecyclerView;
     private InternetReceiver internetReceiver;
@@ -95,14 +94,11 @@ public class RecipeActivity extends AppCompatActivity implements IOnClick {
 
     ;
 
-
     @Override
     public void onClick(int position) {
         Intent intent = new Intent(this, RecipeStepsActivity.class);
         intent.putExtra("recipe", recipes.get(position));
         startActivity(intent);
     }
-
-
 }
 

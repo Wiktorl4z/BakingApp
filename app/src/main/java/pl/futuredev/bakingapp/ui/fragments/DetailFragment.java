@@ -3,6 +3,8 @@ package pl.futuredev.bakingapp.ui.fragments;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,8 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
@@ -31,12 +35,15 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
+import pl.futuredev.bakingapp.database.entity.RecipePOJO;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
 import pl.futuredev.bakingapp.ui.adapter.IngredientsAdapter;
+import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 
 public class DetailFragment extends Fragment {
 
@@ -48,6 +55,8 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.ingredients_recycler_view)
     RecyclerView ingredientsRecyclerView;
     Unbinder unbinder;
+    @BindView(R.id.ib_widget)
+    ImageButton ibWidget;
 
     private long playerPosition;
     private boolean playbackReady = true;
@@ -64,13 +73,14 @@ public class DetailFragment extends Fragment {
     private LinearLayoutManager linearLayoutManager;
     private RecyclerView.Adapter adapter;
     private int currentWindow;
+    private RecipePOJO recipe;
+    private Handler mHandler;
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
     public DetailFragment() {
     }
@@ -105,7 +115,7 @@ public class DetailFragment extends Fragment {
             ingredients = getArguments().getParcelableArrayList("ingredients");
             recipeID = getArguments().getInt("id");
         }
-
+        mHandler = new Handler(Looper.getMainLooper());
         recipeDataBase = RecipeDataBase.getInstance(getContext());
         settingUpView(rootView);
 
@@ -134,14 +144,16 @@ public class DetailFragment extends Fragment {
             ivDetail.setImageResource(R.drawable.baking);
         } else {
             ivDetail.setVisibility(View.GONE);
-            player = ExoPlayerFactory.newSimpleInstance(
-                    new DefaultRenderersFactory(getContext()),
-                    new DefaultTrackSelector(), new DefaultLoadControl());
-            player.setPlayWhenReady(true);
-            player.seekTo(0, 0);
-            videoView.setPlayer(player);
-            MediaSource mediaSource = buildMediaSource(uri);
-            player.prepare(mediaSource, true, false);
+            if (player == null) {
+                player = ExoPlayerFactory.newSimpleInstance(
+                        new DefaultRenderersFactory(getContext()),
+                        new DefaultTrackSelector(), new DefaultLoadControl());
+                MediaSource mediaSource = buildMediaSource(uri);
+                player.prepare(mediaSource);
+                player.setPlayWhenReady(true);
+                player.seekTo(currentWindow, playerPosition);
+                videoView.setPlayer(player);
+            }
         }
     }
 
@@ -196,9 +208,9 @@ public class DetailFragment extends Fragment {
 
     private void releasePlayer() {
         if (player != null) {
-            long playbackPosition = player.getCurrentPosition();
-            int currentWindow = player.getCurrentWindowIndex();
-            boolean playWhenReady = player.getPlayWhenReady();
+            playerPosition = player.getCurrentPosition();
+            currentWindow = player.getCurrentWindowIndex();
+            playbackReady = player.getPlayWhenReady();
             player.release();
             player = null;
         }
@@ -209,10 +221,53 @@ public class DetailFragment extends Fragment {
         super.onSaveInstanceState(outState);
         if (player != null) {
             playerPosition = player.getCurrentPosition();
-            currentWindow = player.getCurrentWindowIndex();
             playbackReady = player.getPlayWhenReady();
         }
         outState.putLong(PLAYER_POSITION, playerPosition);
         outState.putBoolean(PLAYER_READY, playbackReady);
+    }
+
+    @OnClick(R.id.ib_widget)
+    public void onViewClicked() {
+        checkingObjectInDataBase();
+    }
+
+    public void checkingObjectInDataBase() {
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                RecipePOJO recipe = recipeDataBase.recipeDao().loadRecipeByIDRecipePOJO(recipeID);
+                if (recipe != null) {
+                    removeFromDatabase(recipe);
+                } else {
+                    addToDatabase();
+                }
+            }
+        });
+    }
+
+    public void removeFromDatabase(RecipePOJO recipe) {
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                recipeDataBase.recipeDao().deleteRecipe(recipe);
+                showToast(getString(R.string.widget_removed));
+            }
+        });
+    }
+
+    public void addToDatabase() {
+        recipe = new RecipePOJO(recipeID, recipeName, ingredients);
+        AppExecutors.getInstance().getDiskIO().execute(new Runnable() {
+            @Override
+            public void run() {
+                recipeDataBase.recipeDao().insertRecipe(recipe);
+                showToast(getString(R.string.add_to_widget));
+            }
+        });
+    }
+
+    public void showToast(final String toast) {
+        mHandler.post(() -> Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show());
     }
 }

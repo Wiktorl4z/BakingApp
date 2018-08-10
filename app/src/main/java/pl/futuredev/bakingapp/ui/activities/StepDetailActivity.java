@@ -3,6 +3,7 @@ package pl.futuredev.bakingapp.ui.activities;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +41,9 @@ import pl.futuredev.bakingapp.viewmodel.AppExecutors;
 
 public class StepDetailActivity extends AppCompatActivity {
 
+    private static final String PLAYER_POSITION = "exo_position";
+    private static final String PLAYER_READY = "exo_ready";
+
     @BindView(R.id.video_view)
     PlayerView videoView;
     @BindView(R.id.tv_short_description)
@@ -65,6 +69,9 @@ public class StepDetailActivity extends AppCompatActivity {
     private RecipeDataBase recipeDataBase;
     private AddRecipeViewModelFactory addRecipeViewModelFactory;
     private int recipeID;
+    private long playerPosition;
+    private boolean playbackReady = true;
+    private int currentWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,11 @@ public class StepDetailActivity extends AppCompatActivity {
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOptions);
+
+        if (savedInstanceState != null) {
+            playerPosition = savedInstanceState.getLong(PLAYER_POSITION);
+            playbackReady = savedInstanceState.getBoolean(PLAYER_READY);
+        }
 
         recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
 
@@ -156,14 +168,16 @@ public class StepDetailActivity extends AppCompatActivity {
             ivDetail.setImageResource(R.drawable.baking);
         } else {
             ivDetail.setVisibility(View.GONE);
-            player = ExoPlayerFactory.newSimpleInstance(
-                    new DefaultRenderersFactory(this),
-                    new DefaultTrackSelector(), new DefaultLoadControl());
-            player.setPlayWhenReady(true);
-            player.seekTo(0, 0);
-            videoView.setPlayer(player);
-            MediaSource mediaSource = buildMediaSource(uri);
-            player.prepare(mediaSource, true, false);
+            if (player == null) {
+                player = ExoPlayerFactory.newSimpleInstance(
+                        new DefaultRenderersFactory(this),
+                        new DefaultTrackSelector(), new DefaultLoadControl());
+                MediaSource mediaSource = buildMediaSource(uri);
+                player.prepare(mediaSource);
+                player.setPlayWhenReady(true);
+                player.seekTo(currentWindow, playerPosition);
+                videoView.setPlayer(player);
+            }
         }
     }
 
@@ -218,11 +232,22 @@ public class StepDetailActivity extends AppCompatActivity {
 
     private void releasePlayer() {
         if (player != null) {
-            long playbackPosition = player.getCurrentPosition();
-            int currentWindow = player.getCurrentWindowIndex();
-            boolean playWhenReady = player.getPlayWhenReady();
+            playerPosition = player.getCurrentPosition();
+            currentWindow = player.getCurrentWindowIndex();
+            playbackReady = player.getPlayWhenReady();
             player.release();
             player = null;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (player != null) {
+            playerPosition = player.getCurrentPosition();
+            playbackReady = player.getPlayWhenReady();
+        }
+        outState.putLong(PLAYER_POSITION, playerPosition);
+        outState.putBoolean(PLAYER_READY, playbackReady);
     }
 }

@@ -50,7 +50,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     public StepsFragment() {
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -78,7 +77,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.vertical_stepper_adapter, parent, false);
-
     }
 
     @Override
@@ -90,7 +88,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
             recipeID = getArguments().getInt("id");
             tablet = getArguments().getBoolean("tablet");
         }
-
         mVerticalStepperView = view.findViewById(R.id.vertical_stepper_view);
         mVerticalStepperView.setStepperAdapter(this);
     }
@@ -108,18 +105,18 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
             @Override
             public void onClick(View view) {
                 if (!mVerticalStepperView.nextStep()) {
-                    AlertDialog.Builder alertbox = new AlertDialog.Builder(getContext());
-                    alertbox.setMessage(getString(R.string.you_have_completed) + " " + recipeName);
-                    alertbox.setTitle(R.string.well_done);
-                    alertbox.setNeutralButton("OK",
+                    AlertDialog.Builder alertBox = new AlertDialog.Builder(getContext());
+                    alertBox.setMessage(getString(R.string.you_have_completed) + " " + recipeName);
+                    alertBox.setTitle(R.string.well_done);
+                    alertBox.setNeutralButton("OK",
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface arg0, int arg1) {
                                 }
                             });
-                    alertbox.show();
+                    alertBox.show();
                 } else {
-                    if (tablet){
-                        iOnClickHandler.onClickStep(index,recipeName,step,recipeID,ingredients);
+                    if (tablet) {
+                        iOnClickHandler.onClickStep(index, recipeName, step, recipeID, ingredients);
                     } else {
                         Intent intent = new Intent(context, StepDetailActivity.class);
                         intent.putExtra("recipeName", recipeName);
@@ -142,6 +139,8 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
             public void onClick(View view) {
                 if (index != 0) {
                     mVerticalStepperView.prevStep();
+                    if (tablet)
+                        iOnClickHandler.onClickStep(index, recipeName, step, recipeID, ingredients);
                 } else {
                     mVerticalStepperView.setAnimationEnabled(!mVerticalStepperView.isAnimationEnabled());
                 }
@@ -149,7 +148,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
         });
         return inflateView;
     }
-
 
     @NonNull
     @Override
@@ -167,7 +165,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     public int size() {
         return steps.size();
     }
-
 
     @Override
     public void onShow(int i) {
