@@ -1,6 +1,5 @@
 package pl.futuredev.bakingapp.ui.widget;
 
-import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -54,28 +53,28 @@ public class WidgetService extends RemoteViewsService {
 
         @Override
         public RemoteViews getViewAt(int position) {
-
             if (recipes == null) return null;
-
-
             String recipeName = recipes.get(position).getName();
-         //   Ingredient ingredient = ingre.get(position).getIngredient();
+            List<Ingredient> ingredientList = recipes.get(position).getIngredient();
 
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
 
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget_item);
+     /*     for (Ingredient ingredient : ingredientList) {
+                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(),
+                        R.layout.widget_list_item);
+                rvIngredient.setTextViewText(R.id.widget_ingredient_item,
+                        String.valueOf(ingredient.getQuantity()) +
+                                String.valueOf(ingredient.getMeasure()) + " " + ingredient.getIngredient());
+                remoteViews.addView(R.id.widget_ingredients_list_layout, rvIngredient);
+            }*/
 
-            remoteViews.setTextViewText(R.id.tv_widget_recipe_name, recipeName);
-            remoteViews.setViewVisibility(R.id.tv_widget_recipe_name, View.VISIBLE);
-
-       //     remoteViews.setTextViewText(R.id.tv_widget_recipe_details, (CharSequence) recipeIngredient);
-            remoteViews.setViewVisibility(R.id.tv_widget_recipe_details, View.VISIBLE);
+            remoteViews.setTextViewText(R.id.tv_recipe_widget_name, recipeName);
+            remoteViews.setViewVisibility(R.id.tv_recipe_widget_name, View.VISIBLE);
 
             Intent fillIntent = new Intent();
-            remoteViews.setOnClickFillInIntent(R.id.tv_widget_recipe_name, fillIntent);
-            remoteViews.setOnClickFillInIntent(R.id.tv_widget_recipe_details, fillIntent);
+            remoteViews.setOnClickFillInIntent(R.id.tv_recipe_widget_name, fillIntent);
 
             return remoteViews;
-
         }
 
         @Override

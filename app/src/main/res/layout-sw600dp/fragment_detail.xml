@@ -6,12 +6,24 @@
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbarThird"
+        android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+
+        <ImageButton
+            android:id="@+id/ib_widget"
+            android:layout_width="wrap_content"
+            android:contentDescription="@string/add_to_widget"
+            android:layout_height="?android:attr/actionBarSize"
+            android:src="@drawable/ic_baseline_widgets_24px"
+            android:theme="@style/ThemeOverlay.AppCompat.Light" />
+
+    </android.support.v7.widget.Toolbar>
 
     <ImageView
         android:id="@+id/iv_detail"
+        android:contentDescription="@string/image_there_is_no_video_for_this_step"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true" />
@@ -23,30 +35,27 @@
 
     </com.google.android.exoplayer2.ui.PlayerView>
 
-    <android.support.v7.widget.CardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardCornerRadius="8dp">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tv_short_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:fontFamily="serif"
+            android:padding="8dp"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/tv_short_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp" />
-
-            <TextView
-                android:id="@+id/tv_step_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp" />
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+        <TextView
+            android:id="@+id/tv_step_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed"
+            android:padding="8dp"
+            android:textSize="16sp" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_ingredients_text"
@@ -55,9 +64,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="serif"
         android:text="@string/ingredients"
-        android:textAllCaps="true"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredients_recycler_view"

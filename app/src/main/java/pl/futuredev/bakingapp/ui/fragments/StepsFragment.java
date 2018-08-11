@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
+import android.support.test.espresso.IdlingResource;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -23,12 +25,23 @@ import moe.feng.common.stepperview.VerticalStepperItemView;
 import moe.feng.common.stepperview.VerticalStepperView;
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.models.Recipe;
+import pl.futuredev.bakingapp.test.SimpleIdlingResource;
 import pl.futuredev.bakingapp.ui.activities.RecipeStepsActivity;
 import pl.futuredev.bakingapp.ui.activities.StepDetailActivity;
 import pl.futuredev.bakingapp.models.Ingredient;
 import pl.futuredev.bakingapp.models.Step;
+import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 
 public class StepsFragment extends Fragment implements IStepperAdapter {
+
+    private static final String STEPS = "steps";
+    private static final String STEP = "step";
+    private static final String ID = "id";
+    private static final String RECIPE_NAME = "recipeName";
+    private static final String INGREDIENTS = "ingredients";
+    private static final String TABLET = "tablet";
+    private static final String OK = "OK";
+
 
     private VerticalStepperView mVerticalStepperView;
     private List<Step> steps;
@@ -39,18 +52,35 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     private Step step;
     private Ingredient ingredient;
     private int recipeID;
+    private IOnClickHandler iOnClickHandler;
+    private Boolean tablet;
 
     public void setRecipeStepsActivity(RecipeStepsActivity recipeStepsActivity) {
         this.recipeStepsActivity = recipeStepsActivity;
     }
 
-    public static StepsFragment getInstance(Recipe recipe) {
+    public StepsFragment() {
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            iOnClickHandler = (IOnClickHandler) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
+
+    public static StepsFragment getInstance(Recipe recipe, Boolean tablet) {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
-        args.putInt("id", recipe.getId());
-        args.putString("recipeName", recipe.getName());
-        args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipe.getIngredients());
+        args.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>) recipe.getSteps());
+        args.putInt(ID, recipe.getId());
+        args.putString(RECIPE_NAME, recipe.getName());
+        args.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) recipe.getIngredients());
+        args.putBoolean(TABLET, tablet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -59,18 +89,17 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup parent, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.vertical_stepper_adapter, parent, false);
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            steps = getArguments().getParcelableArrayList("steps");
-            recipeName = getArguments().getString("recipeName");
-            ingredients = getArguments().getParcelableArrayList("ingredients");
-            recipeID = getArguments().getInt("id");
+            steps = getArguments().getParcelableArrayList(STEPS);
+            recipeName = getArguments().getString(RECIPE_NAME);
+            ingredients = getArguments().getParcelableArrayList(INGREDIENTS);
+            recipeID = getArguments().getInt(ID);
+            tablet = getArguments().getBoolean(TABLET);
         }
-
         mVerticalStepperView = view.findViewById(R.id.vertical_stepper_view);
         mVerticalStepperView.setStepperAdapter(this);
     }
@@ -88,22 +117,26 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
             @Override
             public void onClick(View view) {
                 if (!mVerticalStepperView.nextStep()) {
-                    AlertDialog.Builder alertbox = new AlertDialog.Builder(getContext());
-                    alertbox.setMessage(getString(R.string.you_have_completed) + " " + recipeName);
-                    alertbox.setTitle(R.string.well_done);
-                    alertbox.setNeutralButton("OK",
+                    AlertDialog.Builder alertBox = new AlertDialog.Builder(getContext());
+                    alertBox.setMessage(getString(R.string.you_have_completed) + " " + recipeName);
+                    alertBox.setTitle(R.string.well_done);
+                    alertBox.setNeutralButton(OK,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface arg0, int arg1) {
                                 }
                             });
-                    alertbox.show();
+                    alertBox.show();
                 } else {
-                    Intent intent = new Intent(context, StepDetailActivity.class);
-                    intent.putExtra("recipeName", recipeName);
-                    intent.putExtra("step", step);
-                    intent.putExtra("id", recipeID);
-                    intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
-                    startActivity(intent);
+                    if (tablet) {
+                        iOnClickHandler.onClickStep(index, recipeName, step, recipeID, ingredients);
+                    } else {
+                        Intent intent = new Intent(context, StepDetailActivity.class);
+                        intent.putExtra(RECIPE_NAME, recipeName);
+                        intent.putExtra(STEP, step);
+                        intent.putExtra(ID, recipeID);
+                        intent.putParcelableArrayListExtra(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
+                        startActivity(intent);
+                    }
                 }
             }
         });
@@ -118,6 +151,8 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
             public void onClick(View view) {
                 if (index != 0) {
                     mVerticalStepperView.prevStep();
+                    if (tablet)
+                        iOnClickHandler.onClickStep(index, recipeName, step, recipeID, ingredients);
                 } else {
                     mVerticalStepperView.setAnimationEnabled(!mVerticalStepperView.isAnimationEnabled());
                 }
@@ -125,7 +160,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
         });
         return inflateView;
     }
-
 
     @NonNull
     @Override
@@ -143,7 +177,6 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     public int size() {
         return steps.size();
     }
-
 
     @Override
     public void onShow(int i) {
