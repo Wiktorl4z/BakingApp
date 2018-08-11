@@ -20,8 +20,8 @@ import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 
 public class RecipeStepsActivity extends AppCompatActivity implements IOnClickHandler {
 
-    @BindView(R.id.main_toolbar)
-    Toolbar toolbar;
+    private static final String RECIPE = "recipe";
+
     private boolean tablet;
     private Step step;
     private List<Ingredient> ingredients;
@@ -34,19 +34,14 @@ public class RecipeStepsActivity extends AppCompatActivity implements IOnClickHa
         setContentView(R.layout.second_fragment);
         ButterKnife.bind(this);
 
-        Recipe recipe = getIntent().getParcelableExtra("recipe");
+        Recipe recipe = getIntent().getParcelableExtra(RECIPE);
         recipeName = recipe.getName();
-        toolbar.setLogoDescription(recipeName);
-        setTitle(recipeName);
-        setSupportActionBar(toolbar);
 
         if (findViewById(R.id.detail_fragment) != null) {
             tablet = true;
-            getSupportActionBar().hide();
             replaceStepFragment(recipe, tablet);
         } else {
             tablet = false;
-            getSupportActionBar();
             replaceStepFragment(recipe, tablet);
         }
     }

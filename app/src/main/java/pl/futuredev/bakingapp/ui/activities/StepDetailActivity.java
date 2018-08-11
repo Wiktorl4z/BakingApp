@@ -43,6 +43,10 @@ public class StepDetailActivity extends AppCompatActivity {
 
     private static final String PLAYER_POSITION = "exo_position";
     private static final String PLAYER_READY = "exo_ready";
+    private static final String STEP = "step";
+    private static final String RECIPE_NAME = "recipeName";
+    private static final String INGREDIENTS = "ingredients";
+    private static final String RECIPE_ID = "id";
 
     @BindView(R.id.video_view)
     PlayerView videoView;
@@ -88,10 +92,10 @@ public class StepDetailActivity extends AppCompatActivity {
 
         recipeDataBase = RecipeDataBase.getInstance(getApplicationContext());
 
-        step = getIntent().getParcelableExtra("step");
-        recipeID = Integer.parseInt(getIntent().getExtras().get("id").toString());
-        recipeName = getIntent().getStringExtra("recipeName");
-        ingredients = getIntent().getParcelableArrayListExtra("ingredients");
+        step = getIntent().getParcelableExtra(STEP);
+        recipeID = Integer.parseInt(getIntent().getExtras().get(RECIPE_ID).toString());
+        recipeName = getIntent().getStringExtra(RECIPE_NAME);
+        ingredients = getIntent().getParcelableArrayListExtra(INGREDIENTS);
 
         tvTitleDescription.setText(step.getShortDescription());
         tvStepDescription.setText(step.getDescription());

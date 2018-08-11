@@ -49,6 +49,10 @@ public class DetailFragment extends Fragment {
 
     private static final String PLAYER_POSITION = "exo_position";
     private static final String PLAYER_READY = "exo_ready";
+    private static final String STEP = "step";
+    private static final String RECIPE_NAME = "recipeName";
+    private static final String INGREDIENTS = "ingredients";
+    private static final String RECIPE_ID = "id";
 
     @BindView(R.id.video_view)
     PlayerView videoView;
@@ -88,10 +92,10 @@ public class DetailFragment extends Fragment {
     public static DetailFragment getInstance(Step step, List<Ingredient> ingredients, String recipeName, int recipeID) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
-        args.putString("recipeName", recipeName);
-        args.putParcelable("step", step);
-        args.putInt("id", recipeID);
-        args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) ingredients);
+        args.putString(RECIPE_NAME, recipeName);
+        args.putParcelable(STEP, step);
+        args.putInt(RECIPE_ID, recipeID);
+        args.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
         fragment.setArguments(args);
         return fragment;
     }
@@ -110,10 +114,10 @@ public class DetailFragment extends Fragment {
 
         Bundle arguments = getArguments();
         if (arguments != null) {
-            step = getArguments().getParcelable("step");
-            recipeName = getArguments().getString("recipeName");
-            ingredients = getArguments().getParcelableArrayList("ingredients");
-            recipeID = getArguments().getInt("id");
+            step = getArguments().getParcelable(STEP);
+            recipeName = getArguments().getString(RECIPE_NAME);
+            ingredients = getArguments().getParcelableArrayList(INGREDIENTS);
+            recipeID = getArguments().getInt(RECIPE_ID);
         }
         mHandler = new Handler(Looper.getMainLooper());
         recipeDataBase = RecipeDataBase.getInstance(getContext());

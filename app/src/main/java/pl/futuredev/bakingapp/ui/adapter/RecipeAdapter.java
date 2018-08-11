@@ -22,6 +22,10 @@ import pl.futuredev.bakingapp.R;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
+    private static final String NUTELLA_PIE = "Nutella Pie";
+    private static final String YELLOW_CAKE = "Yellow Cake";
+    private static final String BROWNIES = "Brownies";
+
     private final IOnClick onClickHandler;
     private List<Recipe> recipes;
     Context context;
@@ -85,11 +89,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             }
         }, 3000);
 
-        if (cake.equals("Nutella Pie")) {
+        if (cake.equals(NUTELLA_PIE)) {
             ivRecipe.setImageResource(R.drawable.nutellapie);
-        } else if (cake.equals("Yellow Cake")) {
+        } else if (cake.equals(YELLOW_CAKE)) {
             ivRecipe.setImageResource(R.drawable.yellowcake);
-        } else if (cake.equals("Brownies")) {
+        } else if (cake.equals(BROWNIES)) {
             ivRecipe.setImageResource(R.drawable.brownies);
         } else {
             ivRecipe.setImageResource(R.drawable.cheesecake);

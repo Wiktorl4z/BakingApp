@@ -34,6 +34,15 @@ import pl.futuredev.bakingapp.ui.interfaces.IOnClickHandler;
 
 public class StepsFragment extends Fragment implements IStepperAdapter {
 
+    private static final String STEPS = "steps";
+    private static final String STEP = "step";
+    private static final String ID = "id";
+    private static final String RECIPE_NAME = "recipeName";
+    private static final String INGREDIENTS = "ingredients";
+    private static final String TABLET = "tablet";
+    private static final String OK = "OK";
+
+
     private VerticalStepperView mVerticalStepperView;
     private List<Step> steps;
     private Context context;
@@ -67,11 +76,11 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     public static StepsFragment getInstance(Recipe recipe, Boolean tablet) {
         StepsFragment fragment = new StepsFragment();
         Bundle args = new Bundle();
-        args.putParcelableArrayList("steps", (ArrayList<? extends Parcelable>) recipe.getSteps());
-        args.putInt("id", recipe.getId());
-        args.putString("recipeName", recipe.getName());
-        args.putParcelableArrayList("ingredients", (ArrayList<? extends Parcelable>) recipe.getIngredients());
-        args.putBoolean("tablet", tablet);
+        args.putParcelableArrayList(STEPS, (ArrayList<? extends Parcelable>) recipe.getSteps());
+        args.putInt(ID, recipe.getId());
+        args.putString(RECIPE_NAME, recipe.getName());
+        args.putParcelableArrayList(INGREDIENTS, (ArrayList<? extends Parcelable>) recipe.getIngredients());
+        args.putBoolean(TABLET, tablet);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,11 +94,11 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            steps = getArguments().getParcelableArrayList("steps");
-            recipeName = getArguments().getString("recipeName");
-            ingredients = getArguments().getParcelableArrayList("ingredients");
-            recipeID = getArguments().getInt("id");
-            tablet = getArguments().getBoolean("tablet");
+            steps = getArguments().getParcelableArrayList(STEPS);
+            recipeName = getArguments().getString(RECIPE_NAME);
+            ingredients = getArguments().getParcelableArrayList(INGREDIENTS);
+            recipeID = getArguments().getInt(ID);
+            tablet = getArguments().getBoolean(TABLET);
         }
         mVerticalStepperView = view.findViewById(R.id.vertical_stepper_view);
         mVerticalStepperView.setStepperAdapter(this);
@@ -111,7 +120,7 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
                     AlertDialog.Builder alertBox = new AlertDialog.Builder(getContext());
                     alertBox.setMessage(getString(R.string.you_have_completed) + " " + recipeName);
                     alertBox.setTitle(R.string.well_done);
-                    alertBox.setNeutralButton("OK",
+                    alertBox.setNeutralButton(OK,
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface arg0, int arg1) {
                                 }
@@ -122,10 +131,10 @@ public class StepsFragment extends Fragment implements IStepperAdapter {
                         iOnClickHandler.onClickStep(index, recipeName, step, recipeID, ingredients);
                     } else {
                         Intent intent = new Intent(context, StepDetailActivity.class);
-                        intent.putExtra("recipeName", recipeName);
-                        intent.putExtra("step", step);
-                        intent.putExtra("id", recipeID);
-                        intent.putParcelableArrayListExtra("ingredients", (ArrayList<? extends Parcelable>) ingredients);
+                        intent.putExtra(RECIPE_NAME, recipeName);
+                        intent.putExtra(STEP, step);
+                        intent.putExtra(ID, recipeID);
+                        intent.putParcelableArrayListExtra(INGREDIENTS, (ArrayList<? extends Parcelable>) ingredients);
                         startActivity(intent);
                     }
                 }
