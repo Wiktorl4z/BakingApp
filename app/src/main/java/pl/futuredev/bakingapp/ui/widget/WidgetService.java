@@ -57,16 +57,24 @@ public class WidgetService extends RemoteViewsService {
             String recipeName = recipes.get(position).getName();
             List<Ingredient> ingredientList = recipes.get(position).getIngredient();
 
+    /*        int i = 0;
+            while (recipes.get(i).getIngredient() != null) {
+                String ingredient = ingredientList.get(position).getIngredient();
+                String measure = ingredientList.get(position).getMeasure();
+                Double quantity = ingredientList.get(position).getQuantity();
+                summery = ingredient + measure + quantity;
+                i++;
+            }
+            listIngredients += summery;*/
+
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
 
-     /*     for (Ingredient ingredient : ingredientList) {
-                RemoteViews rvIngredient = new RemoteViews(context.getPackageName(),
-                        R.layout.widget_list_item);
-                rvIngredient.setTextViewText(R.id.widget_ingredient_item,
-                        String.valueOf(ingredient.getQuantity()) +
-                                String.valueOf(ingredient.getMeasure()) + " " + ingredient.getIngredient());
-                remoteViews.addView(R.id.widget_ingredients_list_layout, rvIngredient);
-            }*/
+            String s= String.valueOf(ingredientList.get(position));
+            String [] spilit=s.split("`");
+            String quantity_plus_measure=spilit[1]+spilit[2];
+
+            remoteViews.setTextViewText(R.id.tvWidgetRecipeDetails, spilit[0]);
+            remoteViews.setViewVisibility(R.id.tvWidgetRecipeDetails, View.VISIBLE);
 
             remoteViews.setTextViewText(R.id.tv_recipe_widget_name, recipeName);
             remoteViews.setViewVisibility(R.id.tv_recipe_widget_name, View.VISIBLE);

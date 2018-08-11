@@ -18,13 +18,13 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.test_recipe_widget);
         Intent gridIntent = new Intent(context, WidgetService.class);
-        views.setRemoteAdapter(R.id.widget_layout, gridIntent);
+        views.setRemoteAdapter(R.id.gvRecipeWidget, gridIntent);
         Intent appIntent = new Intent(context, RecipeActivity.class);
         PendingIntent intent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        views.setPendingIntentTemplate(R.id.widget_layout, intent);
-        views.setEmptyView(R.id.widget_layout, R.id.widget_ingredients_list_layout);
+        views.setPendingIntentTemplate(R.id.gvRecipeWidget, intent);
+        views.setEmptyView(R.id.gvRecipeWidget, R.id.llEmptyView);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
