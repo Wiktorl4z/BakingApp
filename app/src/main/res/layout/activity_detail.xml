@@ -34,28 +34,28 @@
                 android:fontFamily="serif"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:padding="8dp" />
+                android:textSize="@dimen/sp18"
+                android:padding="@dimen/dp8" />
 
             <TextView
                 android:id="@+id/tv_step_description"
                 android:fontFamily="sans-serif-condensed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:padding="8dp" />
+                android:textSize="@dimen/sp16"
+                android:padding="@dimen/dp8" />
         </LinearLayout>
 
     <TextView
         android:id="@+id/tv_ingredients_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginEnd="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        android:layout_marginTop="@dimen/dp8"
         android:fontFamily="serif"
         android:text="@string/ingredients"
-        android:textSize="18sp" />
+        android:textSize="@dimen/sp18"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/ingredients_recycler_view"

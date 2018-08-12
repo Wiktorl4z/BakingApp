@@ -6,7 +6,9 @@ import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import pl.futuredev.bakingapp.R;
 import pl.futuredev.bakingapp.database.entity.RecipeDataBase;
@@ -26,6 +28,9 @@ public class WidgetService extends RemoteViewsService {
 
         private Context context;
         List<RecipePOJO> recipes;
+        List<RecipePOJO> ingredients;
+        String summery;
+        String listIngredients;
 
         public WidgetViewsFactory(Context context) {
             this.context = context;
@@ -57,23 +62,21 @@ public class WidgetService extends RemoteViewsService {
             String recipeName = recipes.get(position).getName();
             List<Ingredient> ingredientList = recipes.get(position).getIngredient();
 
-    /*        int i = 0;
-            while (recipes.get(i).getIngredient() != null) {
-                String ingredient = ingredientList.get(position).getIngredient();
-                String measure = ingredientList.get(position).getMeasure();
-                Double quantity = ingredientList.get(position).getQuantity();
-                summery = ingredient + measure + quantity;
-                i++;
+            List<String> strings = new ArrayList<>(ingredientList.size());
+            for (Object object : ingredientList) {
+                strings.add(Objects.toString(object, null));
             }
-            listIngredients += summery;*/
 
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget);
 
-            String s= String.valueOf(ingredientList.get(position));
-            String [] spilit=s.split("`");
-            String quantity_plus_measure=spilit[1]+spilit[2];
+            StringBuilder sb = new StringBuilder();
+            for (String s : strings)
+            {
+                sb.append(s);
+                sb.append("\t");
+            }
 
-            remoteViews.setTextViewText(R.id.tvWidgetRecipeDetails, spilit[0]);
+            remoteViews.setTextViewText(R.id.tvWidgetRecipeDetails, sb.toString());
             remoteViews.setViewVisibility(R.id.tvWidgetRecipeDetails, View.VISIBLE);
 
             remoteViews.setTextViewText(R.id.tv_recipe_widget_name, recipeName);

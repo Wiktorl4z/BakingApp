@@ -4,13 +4,13 @@
     android:background="@color/colorPrimary">
 
     <GridView
-        android:id="@+id/gvRecipeWidget"
+        android:id="@+id/gv_recipe_widget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:numColumns="1" />
 
     <LinearLayout
-        android:id="@+id/llEmptyView"
+        android:id="@+id/ll_empty_view"
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -21,14 +21,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp16"
-            android:text="EMPTY WIDGET"/>
+            android:text="@string/empty_widget"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/dp16"
-            android:text="STEPS GO"/>
+            android:text="@string/steps_go"/>
 
     </LinearLayout>
 
