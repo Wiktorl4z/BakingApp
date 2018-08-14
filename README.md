@@ -4,6 +4,9 @@
 
 This project is the third task of the Android Nanodegree Scholarship.
 
+Baking App allow Udacity’s resident baker-in-chief, Miriam, to share her recipes with the world. 
+App allow a user to select a recipe and see video-guided steps for how to complete it.
+
 # Built With
 * [Support Library](https://developer.android.com/topic/libraries/support-library/)
 * [Architecture Components](https://developer.android.com/topic/libraries/architecture/)
@@ -22,7 +25,7 @@ This project is the third task of the Android Nanodegree Scholarship.
 
 # Phone
 
-<img src="art/phone_second_activity.png" width="280"><img src="art/phone_first_activity.png" width="280"><img src="art/phone_details_activity.png" width="280">
+<img src="art/phone_first_activity.png" width="280"><img src="art/phone_second_activity.png" width="280"><img src="art/phone_details_activity.png" width="280">
 
 # Tablet
 
